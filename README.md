@@ -1,15 +1,52 @@
 # MicroPython-Bootcamp
 
+The goal of this repo is to hold the materials for a MicroPython IoT Bootcamp.
 
+This Bootcamp has the following main goals:
 
+* Transfer knowledge and information to create rapid prototypes
+* Show the art of the possible using simple devices 
+* Learn to use these devices in combination with simple and more complex cloud services Using both Micosoft and other technologies
+* Allow the participant use the knowledge during provided Labs
+* Allow the participants to use this knowledge to envision possibilitiues for the use of IoT in production environments.
+* Take the solutions (both Software and Devices) back to their workplace or home to continue learning and expirimentation.
 
+Hardware
+--------
+The plan is to use ESP32 based hardware with SPI RAM to allow effective protytyping withouth the need to write highly optimised code.
+
+Firmware
+--------
+Teh bootcamp will use [MicroPython](http://micropython.org/)
+
+and specifically the  firmware developped by 
+[loboris / MicroPython_ESP32_psRAM_LoBo](https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo) 
+
+IDE Tooling
+-----------
+The Labs will make use of a fork of ESPlorer: [Josverl/ESPlorer](https://github.com/Josverl/ESPlorer) which is a simple IDE and this fork has specific support for MicroPython.
+
+## Project Structure
+Code, Documentation and required binaries are located in the following structure:
+
+    ├───Documentation
+    ├───MCU                         Software to be loaded on the ESP32
+    │   ├───Demo-1 Description      Software and descriptions 
+    │   ├───Demo-2 Description          for the different Demos
+    │   ├───Firmware                The ESP32 Firmware to be used
+    │   ├───Lab-1 Description       Lab code and Decumentation
+    │   ├───Lab-2 Description
+    │   ├───Lab-x
+    │   └───Libs                    MicroPython Libraries
+    └───PC                          Software to be loaded on the MCU
+        ├───IDE
+        ├───Prerequisites
+        └───Python
 
 ## Contributions
-
-Please refer to [CONTRIBUTING.md](Documentation/CONTRIBUTING.md)
+Please refer to [Contributing.md](Documentation/CONTRIBUTING.md)
 
 ## License
-
 This project has adopted the [Microsoft Open Source Code of Conduct] (https://opensource.microsoft.com/codeofconduct/). For more information, see the [Code of Conduct FAQ] (https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com] (mailto:opencode@microsoft.com) with any additional questions or comments.
 
 The MIT License (MIT)
