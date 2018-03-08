@@ -8,11 +8,13 @@ function Download ($link, $folder)
 {
     #Use TLS 1.2
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
-
+    if (-not (Test-Path $folder)) {
+        New-Item -Path $folder -ItemType Directory
+    }
     if ($link) {
-        $filename = join-path $folder (Split-path -Path $link.href -Leaf) 
+        $filename = join-path $folder (Split-path -Path $link -Leaf) 
         #download this file to the 
-        wget -UseBasicParsing -Uri $link.href -OutFile $filename -Verbose
+        wget -UseBasicParsing -Uri $link -OutFile $filename -Verbose
         dir $filename
 
         $ext = [System.IO.Path]::GetExtension($filename)
@@ -50,7 +52,7 @@ switch ($firmware)
 
 
 if ($ESP32_link) {
-    Download -link $ESP32_link -folder $folder
+    Download -link $ESP32_link.href -folder $folder
 } 
 
 #Python 3
@@ -62,22 +64,23 @@ if ($ESP32_link) {
     $Python3_link = $downloads.Links | where innertext -like "Windows x86-64 executable installer" | select -First 1
 
     if ($Python3_link) {
-        Download -link $Python3_link -folder $folder
-
-        #Install Python 
-        #{sharedPath}python-3.6.3.exe /passive /quiet
+        Download -link $Python3_link.href -folder $folder
 
     } 
-#PIP3
-#  Reference : https://arunrocks.com/guide-to-install-python-or-pip-on-windows/
 
-#requires Python(3) to be installed first 
-#download helper 
-$GetPip = (Join-path $folder 'get-pip.py')
-wget -Uri 'https://bootstrap.pypa.io/get-pip.py' -UseBasicParsing -OutFile $GetPip
 
-#Todo : Does not run in ISE , only in cmd or plain powershell 
-python $GetPip
+# PIP3
+# Reference : https://arunrocks.com/guide-to-install-python-or-pip-on-windows/
+
+#download `get-pip helper script 
+
+Download -link 'https://bootstrap.pypa.io/get-pip.py' -folder  $folder 
+
+
+#Silab USB Drivers 
+
+$Silab_DL = "https://www.silabs.com/documents/public/software/CP210x_Universal_Windows_Driver.zip"
+Download -link $Silab_DL -folder (Join-Path $folder "USB")
 
 
 #Java 
