@@ -4,21 +4,20 @@
 $folder = "C:\Dev\MicroPython-Bootcamp\PC\Prerequisites"
 
 #Install Python 
+#Python 32 & 4 bits installer
+&$folder\jre-8u161-windows-x64.exe 
+#todo Wait for it 
+
+
 
 $64bit = $true
 if ($64bit) { 
-    #64 bit 
-    #Python 
-    #todo Wait for it 
-    &$folder\python-3.6.4-amd64.exe /passive 
 
     &$folder\jre-8u161-windows-x64.exe 
 } else {
     
-    #todo Python 32 bits
-    C:\Dev\MicroPython-Bootcamp\PC\Prerequisites\
 
-    &$folder\jre-8u161-windows-x64.exe\jre-8u161-windows-i586.exe
+    &$folder\jre-8u161-windows-i586.exe
 }
 
 

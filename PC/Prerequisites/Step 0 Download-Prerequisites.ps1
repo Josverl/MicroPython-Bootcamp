@@ -14,8 +14,8 @@ function Download ($link, $folder)
     if ($link) {
         $filename = join-path $folder (Split-path -Path $link -Leaf) 
         #download this file to the 
-        wget -UseBasicParsing -Uri $link -OutFile $filename -Verbose
-        dir $filename
+        Invoke-WebRequest -UseBasicParsing -Uri $link -OutFile $filename -Verbose
+        Get-ChildItem $filename
 
         $ext = [System.IO.Path]::GetExtension($filename)
 
@@ -35,18 +35,18 @@ switch ($firmware)
         
        
         #Get the current downloads 
-        $downloads = wget 'https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo/wiki/firmwares' -Verbose
+        $downloads = Invoke-WebRequest 'https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo/wiki/firmwares' -Verbose
  
         # MicroPython, single partition layout, 4MB Flash & 4MB SPIRAM, ALL modules included
-        $ESP32_link = $downloads.Links | where innertext -like "MicroPython*esp32*psram*all"  | select -First 1
+        $ESP32_link = $downloads.Links | Where innertext -like "MicroPython*esp32*psram*all"  | select -First 1
 
     }
 
     Default{
         #Get the current downloads 
-        $downloads = wget http://micropython.org/download
+        $downloads = Invoke-WebRequest http://micropython.org/download
         #Filter for the FIRST ESP32 DOWNLOAD 
-        $ESP32_link = $downloads.Links | where href -like "*esp32-*" | select -First 1
+        $ESP32_link = $downloads.Links | Where href -like "*esp32-*" | select -First 1
     }
 }
 
@@ -58,13 +58,13 @@ if ($ESP32_link) {
 #Python 3
 
     #Get the current downloads 
-    $downloads = wget 'https://www.python.org/downloads/release/python-364/'
+    $downloads = Invoke-WebRequest 'https://www.python.org/downloads/release/python-364/'
 
     #Filter for the FIRST ESP32 DOWNLOAD 
-    $Python3_link = $downloads.Links | where innertext -like "Windows x86-64 executable installer" | select -First 1
+    $Python3_link = $downloads.Links | Where-Object innertext -like "Windows x86-64 executable installer" | select -First 1
 
     if ($Python3_link) {
-        Download -link $Python3_link.href -folder $folder
+        Download -link $Python3_link.href -folder (Join-Path $folder "Python 3")
 
     } 
 

@@ -22,9 +22,7 @@ function Get-SerialPorts()
     return $SerialPorts
 }
 
-
-Get-SerialPorts
-
+Get-SerialPorts | FT
 
 Push-Location
 
