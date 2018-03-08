@@ -1,3 +1,6 @@
 [submodule "modules/micropython-m5stack"]
 	path = modules/micropython-m5stack
 	url = https://github.com/tuupola/micropython-m5stack.git
+[submodule "modules/Micropython-Editor"]
+	path = modules/Micropython-Editor
+	url = https://github.com/robert-hh/Micropython-Editor
