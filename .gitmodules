@@ -1,0 +1,3 @@
+[submodule "modules/micropython-m5stack"]
+	path = modules/micropython-m5stack
+	url = https://github.com/tuupola/micropython-m5stack.git
