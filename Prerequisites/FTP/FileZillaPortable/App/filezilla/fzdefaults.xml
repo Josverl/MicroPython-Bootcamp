@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<FileZilla3>
+<Settings>
+<Setting name="Config Location">$FILEZILLA_PORTABLE_SETTINGS</Setting>
+<Setting name="Cache directory">$FILEZILLA_PORTABLE_CACHE</Setting>
+</Settings>
+</FileZilla3>
