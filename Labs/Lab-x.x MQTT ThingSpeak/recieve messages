@@ -1,0 +1,37 @@
+
+#callback function 
+import network,machine
+import time
+
+def patience(client):
+    while client.status()[1] in[ 'Disconnected','Stopping']:
+        time.sleep_ms(50)                        
+
+machine.loglevel('*', machine.LOG_DEBUG)
+
+#simplets connection to recieve data 
+def rcv_message(msg):
+    print( "[{}] Data arrived from Topic  : {} Message:{}".format(msg[0], msg[1], msg[2]) )
+
+listener = network.mqtt('listener',"test.mosquitto.org", data_cb=rcv_message)
+patience(listener)                        
+listener.subscribe("/jos")   
+
+#listener.stop()
+
+#test to broker that does support lwt
+client = network.mqtt(  'Task1',
+                        "test.mosquitto.org",
+                        clientid='client_10713646',
+                        cleansession=True,
+                        lwt_topic="/jos",
+                        lwt_message="offline",
+                        retain=True,keepalive=10)
+patience(client)
+client.publish("/jos",'online')
+print(client)
+
+patience(client)                        
+client.stop()
+patience(client)
+client.free()
