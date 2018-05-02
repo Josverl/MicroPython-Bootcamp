@@ -10,8 +10,8 @@ def mountsd(addlib=True):
 
     if addlib: 
         #very simple , just try to create and add the /sd/lib folder to the path
+        #create Library for modules on the sd card 
         try:
-            #create Library for modules on the sd card 
             os.mkdir('/sd/lib')
         except:
             pass

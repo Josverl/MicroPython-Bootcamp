@@ -63,7 +63,11 @@ class Display(object):
 
     def __init__(self):
         self.tft = self.create()
-
+        try:
+            self.__doc__ = display.TFT.__doc__
+        except :
+            pass
+            
     def __getattr__(self, name):
         return getattr(self.tft, name)
 

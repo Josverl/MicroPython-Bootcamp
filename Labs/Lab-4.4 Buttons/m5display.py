@@ -1,11 +1,82 @@
-"""
-helper module to init M5 display 
-"""
+paste mode; Ctrl-C to cancel, Ctrl-D to finish
+=== 
+=== print('------ :m5display.py')
+=== with open('m5display.py') as f: 
+===      s = f.read()
+===      print(s)
+=== print('------')
+=== 
+------ :m5display.py
+#
+# # This file is part of MicroPython M5Stack package
+# Copyright (c) 2017-2018 Mika Tuupola
+#
+# Licensed under the MIT license:
+#   http://www.opensource.org/licenses/mit-license.php
+#
+# Project home:
+#   https://github.com/tuupola/micropython-m5stack
+#
 
+#pylint: disable=import-error
+from machine import Pin, SPI
+from input import DigitalInput
 import display
+import m5stack
+#pylint: enable=import-error
 
-#todo: guard against initilising multiple times 
-tft = display.TFT()
-# M5Stack display in the correct orientation
-tft.init(tft.ILI9341, width=240, height=320, rst_pin=33, backl_pin=32, miso=19, mosi=23, clk=18, cs=14, dc=27, bgr=True, backl_on=1, invrot=3)
-tft.orient(tft.LANDSCAPE)
+#TODO: does not handle multiple initialisations
+tft = m5stack.Display()
+
+tft.text(tft.CENTER, 45,        "`7MMM.     ,MMF'       \n")
+tft.text(tft.CENTER, tft.LASTY, "  MMMb    dPMM         \n")
+tft.text(tft.CENTER, tft.LASTY, "  M YM   ,M MM  M******\n")
+tft.text(tft.CENTER, tft.LASTY, "  M  Mb  M' MM .M      \n")
+tft.text(tft.CENTER, tft.LASTY, "  M  YM.P'  MM |bMMAg. \n")
+tft.text(tft.CENTER, tft.LASTY, "  M  `YM'   MM      `Mb\n")
+tft.text(tft.CENTER, tft.LASTY, ".JML. `'  .JMML.     jM\n")
+tft.text(tft.CENTER, tft.LASTY, "               (O)  ,M9\n")
+tft.text(tft.CENTER, tft.LASTY, "                6mmm9  \n")
+tft.text(tft.CENTER, tft.LASTY, "                       \n")
+tft.text(tft.CENTER, tft.LASTY, "https://appelsiini.net/")
+
+def button_hander_a(pin, pressed):
+    if pressed is True:
+        tft.text(
+            tft.CENTER, tft.LASTY, "> Button A pressed.     "
+        )
+        m5stack.tone(1800, duration=10, volume=1)
+    else:
+        tft.text(
+            tft.CENTER, tft.LASTY, "> Button A released.    "
+        )
+        m5stack.tone(1300, duration=10, volume=1)
+
+def button_hander_b(pin, pressed):
+    if pressed is True:
+        tft.text(
+            tft.CENTER, tft.LASTY, "> Button B pressed.     "
+        )
+        m5stack.tone(2000, duration=10, volume=1)
+    else:
+        tft.text(
+            tft.CENTER, tft.LASTY, "> Button B released.    "
+        )
+        m5stack.tone(1500, duration=10, volume=1)
+
+def button_hander_c(pin, pressed):
+    if pressed is True:
+        tft.text(
+            tft.CENTER, tft.LASTY, "> Button C pressed.     "
+        )
+        m5stack.tone(2200, duration=10, volume=1)
+    else:
+        tft.text(
+            tft.CENTER, tft.LASTY, "> Button C released.    "
+        )
+        m5stack.tone(1800, duration=10, volume=1)
+
+a = m5stack.ButtonA(callback=button_hander_a)
+b = m5stack.ButtonB(callback=button_hander_b)
+c = m5stack.ButtonC(callback=button_hander_c)
+
