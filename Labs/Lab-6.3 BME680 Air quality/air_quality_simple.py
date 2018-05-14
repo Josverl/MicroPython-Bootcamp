@@ -9,8 +9,8 @@ import time
 i2c_bus = I2CAdapter(sda=21,scl=22)
 
 i2c_bus.scan()
-#i2c_device is actually the I2C bus
-sensor = bme680.BME680(i2c_device=i2c_bus)
+#Specify the Adafruit non-default address 
+sensor = bme680.BME680(i2c_addr=119, i2c_device=i2c_bus)
 
 # These oversampling settings can be tweaked to
 # change the balance between accuracy and noise in
@@ -26,16 +26,17 @@ sensor.set_gas_heater_duration(150)
 sensor.select_gas_heater_profile(0)
 
 
+
+
 print("Polling:")
 try:
     while True:
         if sensor.get_sensor_data():
-            output = "{0:.2f} C,{1:.2f} hPa,{2:.2f} %RH".format(
+            output = "{0:.2f} C,{1:.2f} hPa,{2:.2f} %RH,{3:.2f} gas resistance".format(
                 sensor.data.temperature,
                 sensor.data.pressure,
                 sensor.data.humidity,
                 sensor.data.gas_resistance)
-
             print(output)
 '''
 gas sensor needs a stable heating 
