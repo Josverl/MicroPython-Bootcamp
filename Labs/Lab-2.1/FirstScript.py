@@ -10,7 +10,7 @@ import time
 
 possibleCharacters = string.ascii_lowercase + string.digits + string.ascii_uppercase + ' .,!?;:'
 
-target = "Hello from Python 3"
+target = "Python has been succesfully installed, Thank you"
 attemptThis = ''.join(random.choice(possibleCharacters) for i in range(len(target)))
 attemptNext = ''
 

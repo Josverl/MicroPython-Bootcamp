@@ -1,60 +1,52 @@
-"""
-IoT Bootcamp - weatherstation.py 
-Marcus Tarquinio, Jos Verlinde
-28th Abril 2018
-"""
-
-import machine
-import time
-import bme280
 import socket
 import ujson
-
 import urequests
 
-PinScl = 15
-PinSda = 4
-PinDisplay = 16
-
-if not 'i2c' in dir():
-    i2c = machine.I2C(scl=machine.Pin(PinScl), sda=machine.Pin(PinSda))
-
-for i in i2c.scan():
-    print(hex(i))
-
-if not 'bme' in dir():
-    bme = bme280.BME280(i2c=i2c, address=0x76)
-
-def clock():
-    print("Clock")
-
-def wunderground():
+def getforecast(lat='49.53892899',lng='6.12860155'):
     #load information for location 
-    url = 'http://api.wunderground.com/api/35bb891b4697284b/geolookup/forecast/q/49.53892899,6.12860155.json'
+    url = 'http://api.wunderground.com/api/35bb891b4697284b/geolookup/forecast/q/{},{}.json'.format(lat,lng)
     try: 
         #ask for forecast
         response = urequests.get(url)
         #extract the json , and convert it to a dict in one go
         forecast = response.json()
     except:
-        print('Could not retrieve the wether forecast')
+        print('Could not retrieve the weather forecast')
+        #todo error handling
+    finally:
+        response.close() 
+
+    try: 
+        country = forecast['location']['country_name']
+        city = forecast['location']['city']
+        #Just one day 
+        day=forecast['forecast']['txt_forecast']['forecastday'][0]
+        forecast = day['icon']
+        return country,city,forecast
+    except:
+        return "unknown","unknown","unknown"
+
+def getcurrentweather(lat='49.53892899',lng='6.12860155'):
+    #load information for location 
+    url = 'http://api.wunderground.com/api/35bb891b4697284b/geolookup/conditions/q/{},{}.json'.format(lat,lng)
+    try: 
+        #ask for forecast
+        response = urequests.get(url)
+        #extract the json , and convert it to a dict in one go
+        info = response.json()
+    except:
+        print('Could not retrieve the weather forecast')
+        #todo error handling
     finally:
         response.close() 
     
-    forecast['location']['country_name']
-    forecast['location']['city']
-    #Just one day 
-    day=forecast['forecast']['txt_forecast']['forecastday'][0]
-    print( day['title'] )
-    print( day['fcttext'] )
-    print( day['icon'] ,  day['icon_url']  )
+    try: 
+        country = info['location']['country_name']
+        city = info['location']['city']
+        weather = info['current_observation']['weather']
+        return country,city,weather
+    except:
+        return "unknown","unknown","unknown"
 
-    #all days 
-    for day in forecast['forecast']['txt_forecast']['forecastday']:
-        print( day['title'] )
-        print( day['fcttext'] )
-        print( day['icon'] ,  day['icon_url']  )
+        
 
-while True:
-    print(bme.values)
-    time.sleep_ms(1000)

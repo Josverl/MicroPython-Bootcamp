@@ -1,5 +1,7 @@
 import machine,time
 from machine import Pin, Signal, PWM
+import m5stack
+
 #blue led on pin 21
 #green = Signal( Pin(18,Pin.OUT) )
 #red = Signal( Pin(19,Pin.OUT) )
@@ -34,6 +36,10 @@ while 1:
     x,y,z = motion.acceleration
     if x > SENSITIVITY or y > SENSITIVITY or z > SENSITIVITY :
         print('TILT')
+        m5stack.Beep(1000)
+        ## Make Beep 
+        ## Send Alert to MQTT 
+        ## Send Alert via Microsoft Flow 
         x1 = min( abs(int( x *10 )),100)
         y1 = min( abs(int( y *10 )),100)
         z1 = min( abs(int( z *10 )),100)

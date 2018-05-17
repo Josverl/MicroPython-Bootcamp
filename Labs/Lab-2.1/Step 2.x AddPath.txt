@@ -1,0 +1,8 @@
+rem Add the path to the PIP installed modules (and included scripts)
+Rem 
+SETX PATH "%PATH%;%LOCALAPPDATA%\programs\python\python36\lib\site-packages
+
+Rem add the .py extention as an executable extention
+Rem 
+SETX PATHEXT "%PATHEXT%;.PY"
+

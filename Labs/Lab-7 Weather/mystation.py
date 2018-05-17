@@ -1,5 +1,5 @@
 #My Station
-import time
+import time, gc
 #----------------------
 # Initialisation 
 #----------------------
@@ -21,7 +21,7 @@ if not 'i2c_bus' in dir():
 #Specify the Adafruit non-default address 
 sensor = bme680.BME680(i2c_addr=119, i2c_device=i2c_bus)
 
-# These oversampling settings can be tweaked to
+# These oversampling settings can be tweaked to change sensitivity
 sensor.set_humidity_oversample(bme680.OS_2X)
 sensor.set_pressure_oversample(bme680.OS_4X)
 sensor.set_temperature_oversample(bme680.OS_8X)
@@ -72,23 +72,95 @@ if status == 0:
 else:    
     writeln('Error !')
 
-#print(tsChannel)
+#----------------------
+#Load weatherundergound forecast function
+#----------------------
+try:
+    country, city ,forecast, weather = '','','',''
+    from wunderground import *
+    writeln('Retrieve the weather forecast')
+    #get the weather forecast 
+    country, city ,forecast = getforecast()
+    country, city ,weather = getcurrentweather()
+    writeln('Recieved weather and forecast')
+except:
+    writeln('Error')
+    pass
+    
 
+#----------------------
+#Automatic Display activation 
+#----------------------
+writeln('Automatic Display Activation')
+
+from machine import Pin, Timer
+#Activate the detection     
+pir = Pin(5, Pin.IN)
+
+''''
+def displayoffcb(timer):
+    print("[tcb] timer: {}".format(timer.timernum()))
+    if pir.value() == 0:
+        print("Turn the display off")
+        tft.backlight(0)
+    else:
+        print("People still around")
+        t1.reshoot()
+
+# This is the function to be executed 
+# when the PIR sensor first sees movement
+def pircb(p):                    
+    print('Human detected', p)  
+    print('Turn the display on')      
+    tft.backlight(1)
+    t1.reshoot()
+#Activate the detection     
+pir = Pin(5, Pin.IN)
+pir.irq(trigger=Pin.IRQ_RISING, handler=pircb)   # This defines the event
+
+#activate the timeout function for 5000 ms = 5 seconds    
+t1 = Timer(1)
+try:
+    t1.deinit()
+except:
+    pass
+t1.init(period=5000, mode=t1.ONE_SHOT, callback=displayoffcb)
+
+'''
+
+#----------------------
+# Now continue to poll, send , and update 
+# every x seconds
+#----------------------
+INTERVAL = const(60)
 while True:
+    if pir.value() == 0:
+        print("Turn the display off")
+        #tft.backlight(0)
+    else:
+        print("People around")
+        tft.backlight(1)
+    print('updating...')
     #Clean main window
     mainwindow()
+    writeln("Today's observation for \n{}, {}:".format(country,city) )
+    writeln('{}'.format(weather) )
+
+    writeln("Tomorow's forecast : " )
+    writeln('{}\n'.format(forecast) )
+
     #-------------------
     #read local sensor
     if sensor.get_sensor_data():
-        output = "Temp {} C\nPress :{} hPa\nHumidity  {} RH\nPollution {} RES\n".format(
+        output = "Temp {} C\nPress :{} hPa\nHumidity  {} RH\nPollution {} RES".format(
             sensor.data.temperature,
             sensor.data.pressure,
             sensor.data.humidity,
             sensor.data.gas_resistance)
-            
-        write(output)
+        writeln('Data from local sensor:')    
+        writeln(output)
         #Send the data to TS 
-        sensordata = "field1={:.1f}&field2={:.1f}&field4={:.1f}&field4={:.1f}\n".format(
+        sensordata = "field1={:.1f}&field2={:.1f}&field3={:.1f}&field4={:.1f}\n".format(
             sensor.data.temperature,
             sensor.data.pressure,
             sensor.data.humidity,
@@ -96,8 +168,9 @@ while True:
         client.publish(tsChannel, bytes(sensordata, 'utf-8') ) 
     
     #------------
-    #wait for a while
-    time.sleep(30)
+    #clean memory , and wait for a while
+    gc.collect()
+    time.sleep(INTERVAL)
 
 #----------------------
 #load the weather forecast 

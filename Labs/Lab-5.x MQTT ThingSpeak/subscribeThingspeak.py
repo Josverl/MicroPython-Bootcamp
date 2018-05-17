@@ -28,23 +28,9 @@ def cb(topic, msg):
     print("free heap size = {} bytes".format(freeHeap))
 
 #
-#   WiFi connection information
-#
-wifiSSID = "WiFi-SSID"          # EDIT - enter name of WiFi connection point
-wifiPassword = "WiFi-PASSWORD"  # EDIT - enter WiFi password 
-
-#
-#   turn off the WiFi Access Point
-# 
-ap_if = network.WLAN(network.AP_IF)
-ap_if.active(False)
-
-#
 #   connect the ESP8266 device to the WiFi network
 #
 wifi = network.WLAN(network.STA_IF)
-wifi.active(True)
-wifi.connect(wifiSSID, wifiPassword)
 
 #
 # wait until the ESP8266 is connected to the WiFi network

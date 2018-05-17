@@ -10,7 +10,7 @@ if not 'tft' in dir():
 
 #Clear the display - Default background
 
-tft.clear(tft.NAVY)
+tft.clear(tft.ORANGE)
 
 # fonts used in this demo
 fontnames = (

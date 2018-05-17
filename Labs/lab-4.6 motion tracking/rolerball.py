@@ -1,3 +1,6 @@
+import sys 
+sys.path[1]='/flash/lib'
+
 #rolerball
 import display
 import m5stack
@@ -11,6 +14,7 @@ if not 'i2c' in dir():
     i2c = machine.I2C(0, sda=21, scl=22)
 
 MPU9250_ID = const(104) 
+i2c.scan()
 
 if MPU9250_ID in i2c.scan():
     print('motion sensor detected on i2cbus')
@@ -57,6 +61,7 @@ class Ball:
             self.y=y2
             self.draw()
         
+motion.acceleration
 
 #new balls please
 tft.clear()

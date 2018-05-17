@@ -31,7 +31,10 @@ def blinkRainbow(length = 64,loops=10, delay=250):
 rainbow(delay=200)    
 np.clear()
 
-for px in range(0,65):
+
+
+
+for px in range(1,65):
     np.set(px, np.OLIVE)
     time.sleep_ms(100)
 
@@ -77,7 +80,8 @@ fbuf.fill(RGBtoRGB565(np.TEAL))
 fbuf.text('Hello', 0, 0, RGBtoRGB565(np.RED))
 #fbuf.line(0, 0, 0,7, 0xffff)
 
-ShowMatrix(np,fbuf,3)
+
+ShowMatrix(np,fbuf,1)
 
 np.clear()  
 np.brightness(30,True)
