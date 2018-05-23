@@ -1,13 +1,13 @@
 RELEASE NOTES
 =============
-Silicon Labs Universal Virtual COM Port (VCP) driver for Windows 10
+Silicon Labs Virtual COM Port (VCP) Universal Driver for Windows 10
 
-Package version: 10.1.1
-Release date:    2017-11-15
+Package version: 10.1.2
+Release date:    2018-05-14
 
-This package contains a Universal Virtual COM Port driver for Microsoft Windows 10
-for use with Silicon Labs VCP USB Serial Bridges.  These devices include
-the CP2102N, CP2102, CP2103, CP2104, CP2105, CP2108, CP2109.
+This package contains a Virtual COM Port Universal driver for Microsoft
+Windows 10 for use with Silicon Labs VCP USB Serial Bridges.  These devices
+include the CP2102N, CP2102, CP2103, CP2104, CP2105, CP2108, CP2109.
 
 OS VERSIONS
 -----------
@@ -16,9 +16,19 @@ of Windows:
 
 - Windows 10    (x86 32/64 bit)
 
+CHOOSING VCP DRIVER VERSION
+---------------------------
+VCP drivers of version 10.0.0 and later are released for Windows 10 as
+Universal Drivers.  This means they do not work on older version of Windows
+such as Window 7 and 8.1.  You should use this driver if you only need
+support for Windows 10, or you need the Universal driver.  If you require
+support on older versions of Windows, you should use the legacy VCP driver
+which can be found on the Silicon Labs web site.  The legacy Windows VCP
+drivers have version numbers less than 10.0.0.
+
 CONTENTS
 --------
-This VCP driver installation package contains the following files and directories:
+The VCP driver package contains the following files and directories:
 - silabser.inf -- Driver information file
 - CP210xVCPInstaller_x64.exe -- 64-bit installer
 - CP210xVCPInstaller_x86.exe -- 32-bit installer
@@ -31,10 +41,11 @@ Additional files needed by installer
 - x64/
 - x86/
 
-
 INSTALLING
 ----------
-Distributed via Windows Update for CP210x Shadow PIDs 0xEA63, 0xEA7A and 0xEA7B.
+The VCP driver is automatically installed by Windows Update for CP210x with
+alternate PID values of 0xEA63, 0xEA7A, and 0xEA7B.  These are not default
+values.
 
 Otherwise, unzip the .zip file and you will have a directory containing the
 driver installer files.
@@ -50,13 +61,12 @@ If Windows prompts you to install a driver for a CP210x device
 
 ### Manual install ###
 
-INSTALLING
-------------
-1. The device must be plugged in
-2. Run Device Manager
-3. Locate the device you want to install
-4. Right click on the device and choose "Update Driver Software ..."
-5. Follow the instructions
+1. Using Windows File Explorer, locate the driver folder
+   (that you previously unzipped)
+2. Determine if you have 32-bit or 64-bit Windows
+3. Double click to run the .exe file named CP210xVCPInstaller_xnn.exe
+   (where xnn is x64 for 64-bit and x86 is for 32-bit)
+4. Follow the instructions
 
 UNINSTALLING
 ------------
@@ -73,17 +83,46 @@ For technical support please visit the Silicon Labs support site:
 https://www.silabs.com/support
 
 ******************************************************************************
+    RELEASE NOTES FOR 10.1.2 (2018-05-14)
+
+Changes for VCP Driver
+==============================================================================
+MCUSW-134    | Fixed an issue with handling of IOCTL_SERIAL_SET_WAIT_MASK,     
+             | IOCTL_SERIAL_WAIT_ON_MASK, with the SERIAL_EV_RXCHAR event and  
+             | data arriving from the device into the driver. Previously, an   
+             | indication of arriving data was made before making the data     
+             | available, causing, in some conditions, subsequent requests for 
+             | data after notification of data available to not deliver any    
+             | data.                                                           
+MCUSW-211    | Windows 10 Universal driver release (I.e. no Windows 7, 8 or    
+             | 8.1 support)                                                    
+MCUSW-288    | Fix IOCTL_SERIAL_GET_PROPERTIES.                                
+MCUSW-291    | Fix IOCTL_SERIAL_GET_PROPERTIES/SERIAL_COMMPROP for CP210x-like 
+             | "Voice MB v2.0" device.                                         
+MCUSW-315    | Certified for RS4/1803.                                         
+
+
+
+******************************************************************************
     RELEASE NOTES FOR 10.1.1 (DriverVer=11/15/2017,10.1.1.1951)
 
 Changes for VCP Driver
 ==============================================================================
 MCUSW-134    | Fixed an issue with handling of IOCTL_SERIAL_SET_WAIT_MASK,
-			 | IOCTL_SERIAL_WAIT_ON_MASK, with the SERIAL_EV_RXCHAR event
-			 | and data arriving from the device into the driver. Previously,
-			 | an indication of arriving data was made before making the data
-			 | available, causing, in some conditions, subsequent requests for
-			 | data after notification of data available to not deliver any data. 
+             | IOCTL_SERIAL_WAIT_ON_MASK, with the SERIAL_EV_RXCHAR event
+             | and data arriving from the device into the driver. Previously,
+             | an indication of arriving data was made before making the data
+             | available, causing, in some conditions, subsequent requests
+             | for data after notification of data available to not deliver
+             | any data. 
 
+
+******************************************************************************
+LEGACY HISTORY
+--------------
+Everything below is the shared development history before creation of the
+Windows 10 Universal driver.  Everything above is development history of
+the Universal driver.
 
 
 ******************************************************************************

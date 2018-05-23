@@ -17,6 +17,10 @@ def RGB565toRGB(Pixel):
         r = red << 16 | grn<<8 | blu
     return r
 
+#thisis much shorter...
+#def RGB565(r, g, b):
+#    return (r & 0xf8) << 8 | (g & 0xfc) << 3 | b >> 3
+    
 def RGBtoRGB565(Pixel):
     if Pixel is None:
         r = 0

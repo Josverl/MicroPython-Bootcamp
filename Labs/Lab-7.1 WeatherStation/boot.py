@@ -17,11 +17,6 @@ except:
     pass 
 #helper functions    
 import m5stack
-from windows import *
-borders(clear=False)
-header('boot.py')
-mainwindow(clear=False)
-home()
 
 def beepHappy():
     #Happy 
@@ -35,11 +30,23 @@ def beepSad():
     m5stack.tone(700, duration=120)
     m5stack.tone(300, duration=100)
 
-def log(text):
-    print(text)
-    writeln(text)
+#general init so that we can re-use the tft 
+screen_w = const(240)
+screen_h = const(320)
+header_h = const(32)
 
-# Connect to WiFi 
+if not 'tft' in dir():
+    import display
+    tft = display.TFT()
+    tft.init(tft.M5STACK, width=screen_w, height=screen_h, rst_pin=33, backl_pin=32, miso=19, mosi=23, clk=18, cs=14, dc=27, bgr=True, backl_on=1)
+    tft.font(tft.FONT_DejaVu18, transparent = False )
+    tft.text(0,0,'')
+
+def log(text):
+    # Connect to WiFi 
+    tft.text(tft.LASTX ,tft.LASTY,text+'\n')
+
+
 def connectWifi():
     "Connect to WiFi"
     import network, time
@@ -48,7 +55,6 @@ def connectWifi():
         from myconfig import wifi_ssid , wifi_psk
     except:
         print('No Network configuration file found')
-        #todo: show help how to create one 
         return False
     wlan = network.WLAN(network.STA_IF)
     tmo = 80
@@ -68,8 +74,6 @@ def connectWifi():
         log( 'IP: {}'.format( wlan.ifconfig()[0]  ))
         return True
     except:
-        pass
-    if not wlan.isconnected():
         beepSad()
         return False
 
@@ -87,30 +91,37 @@ def getNetworkTime(timezone = "CET-1CEST"):
         if tmo==0:
             break
         time.sleep_ms(10)
+    print(rtc.now())
+
 
 #simplify filesystem access from the prompt
 from upysh import *
+
 
 # Connect to WiFi 
 log('Connect to WiFi...')
 connected = connectWifi()
 if connected:
-    #log('Get network Time...')
+    log('Get network Time...')
     getNetworkTime()
-    fmt="%d-%m-%Y, %T %Z" #Europe
-    #fmt="%b %d %Y, %r %Z" #US
-    log(time.strftime(fmt,time.localtime()))
+
+
+    
 #----------
 # Start FTP Server
 #-----------
 StartFTP = False
 if StartFTP:
     log('Start FTP Server...')
-    from network import ftp,telnet
+    from network import ftp
     ftp.start(user="micro", password="python")
-    telnet.start(user="micro", password="python")
     time.sleep(1)
-    log("FTP server: {}".format(ftp.status()[2]))
-    log("Telnet server: {}".format(telnet.status()[2]))
+    _=ftp.status()
+    print("FTP server: {}, {} on {}".format(_[2],_[3],_[4]))
+
+log('>main.py')
+
+#Allow the screen to be re-used 
+tft.deinit()
+
  
-import gc;gc.collect()

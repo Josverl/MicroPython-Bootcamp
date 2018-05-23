@@ -8,7 +8,7 @@ import time, gc
 from windows import *
 
 borders()
-header('JOS')
+header('Give me a name')
 mainwindow()
 #----------------------
 #connect to the sensors 
@@ -77,6 +77,7 @@ else:
 #load the weather forecast 
 #----------------------
 country, city ,forecast, weather = '?','?','?','?'
+'''
 try:
     
     from wunderground import *
@@ -89,6 +90,7 @@ except:
     writeln('Error')
     pass
     
+'''
 #----------------------
 #Automatic Display activation 
 #----------------------
@@ -119,6 +121,16 @@ while True:
 
     writeln("Tomorow's forecast : " )
     writeln('{}\n'.format(forecast) )
+    
+    #------------MOVE THIS PART UP ------
+    #clean memory , and wait for a while
+    gc.collect()
+    time.sleep(INTERVAL)
+    #------------MOVE THIS PART UP ------
+
+
+    
+'''
     #-------------------
     #read local sensor
     if sensor.get_sensor_data():
@@ -129,9 +141,11 @@ while True:
             sensor.data.gas_resistance)
         writeln('Data from local sensor:')    
         writeln(output)
+'''
     #-------------------
     #Send the data to TS
     #------------------- 
+''' 
     #enable only when mqtt is enabled   
     sensordata = "field1={:.1f}&field2={:.1f}&field3={:.1f}&field4={:.1f}\n".format(
         sensor.data.temperature,
@@ -139,10 +153,7 @@ while True:
         sensor.data.humidity,
         sensor.data.gas_resistance)
     client.publish(tsChannel, bytes(sensordata, 'utf-8') ) 
-    #------------
-    #clean memory , and wait for a while
-    gc.collect()
-    time.sleep(INTERVAL)
+'''    
 
 
 

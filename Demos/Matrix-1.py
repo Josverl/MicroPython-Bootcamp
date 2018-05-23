@@ -84,14 +84,15 @@ fbuf.text('Hello', 0, 0, RGBtoRGB565(np.RED))
 ShowMatrix(np,fbuf,1)
 
 np.clear()  
-np.brightness(30,True)
+np.brightness(15,True)
 bg = RGBtoRGB565(np.TEAL)
-fg = RGBtoRGB565(np.RED)
-for c in ' Hello Word ':
-    fbuf.fill(bg)
-    fbuf.text(c, 0, 0, fg)
-    ShowMatrix(np,fbuf)
-    time.sleep(1)
+fg = RGBtoRGB565(np.ORANGE)
+while True: 
+    for c in ' IoT at ArcellorMittal in Ghent':
+        fbuf.fill(bg)
+        fbuf.text(c, 0, 0, fg)
+        ShowMatrix(np,fbuf)
+        time.sleep(1)
 
     #Scroll Left
     fbuf.scroll(-1,0)

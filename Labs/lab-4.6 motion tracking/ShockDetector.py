@@ -36,7 +36,7 @@ while 1:
     x,y,z = motion.acceleration
     if x > SENSITIVITY or y > SENSITIVITY or z > SENSITIVITY :
         print('TILT')
-        m5stack.Beep(1000)
+        #m5stack.Beep(1000)
         ## Make Beep 
         ## Send Alert to MQTT 
         ## Send Alert via Microsoft Flow 

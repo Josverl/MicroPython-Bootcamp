@@ -12,17 +12,6 @@ if not 'tft' in dir():
 
 tft.clear(tft.ORANGE)
 
-# fonts used in this demo
-fontnames = (
-    tft.FONT_Default,
-    tft.FONT_7seg,
-    tft.FONT_Ubuntu,
-    tft.FONT_Comic,
-    tft.FONT_Tooney,
-    tft.FONT_Minya
-)
-
-
 #general init 
 screen_w, screen_h = tft.screensize()
 header_h = 32

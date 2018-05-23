@@ -4,7 +4,7 @@
 ;
 ;    SILABSER.INF
 ;
-;    Copyright 2017, Silicon Laboratories Inc.
+;    Copyright 2018, Silicon Laboratories Inc.
 ;
 ;Abstract:
 ;    Installation INF for Silicon Labs CP210x device
@@ -16,9 +16,9 @@ Signature="$WINDOWS NT$"
 Class=Ports
 ClassGuid={4D36E978-E325-11CE-BFC1-08002BE10318}
 Provider=%Provider%
-DriverVer=11/15/2017,10.1.1.1951
-CatalogFile=silabser.cat
-PnpLockDown=1	; "a driver package should set PnpLockDown to 1" -- MSDN
+DriverVer = 05/07/2018,10.1.2.2115
+CatalogFile = silabser.cat
+PnpLockDown=1
 
 ; ================= Device section =====================
 
@@ -29,9 +29,9 @@ PnpLockDown=1	; "a driver package should set PnpLockDown to 1" -- MSDN
 ; cut'n'paste duplication in these next four per-Architecture ModelsSections
 ;Models section for installation of x64 driver on Windows 10 and above
 [SiLabsModelsSection.NTamd64.10]
-%USB\VID_10C4&PID_EA60.DeviceDesc%      =SiLabsDDInstallSection, USB\VID_10C4&PID_EA60		; USB\VID_v(4)&PID_d(4)
+%USB\VID_10C4&PID_EA60.DeviceDesc%      =SiLabsDDInstallSection, USB\VID_10C4&PID_EA60
 %USB\VID_10C4&PID_EA63.DeviceDesc%      =SiLabsDDInstallSection, USB\VID_10C4&PID_EA63
-%USB\VID_10C4&PID_EA70&Mi_00.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA70&Mi_00	; USB\VID_v(4)&PID_d(4)&MI_z(2)
+%USB\VID_10C4&PID_EA70&Mi_00.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA70&Mi_00
 %USB\VID_10C4&PID_EA70&Mi_01.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA70&Mi_01
 %USB\VID_10C4&PID_EA71&Mi_00.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA71&Mi_00
 %USB\VID_10C4&PID_EA71&Mi_01.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA71&Mi_01
@@ -46,9 +46,9 @@ PnpLockDown=1	; "a driver package should set PnpLockDown to 1" -- MSDN
 
 ;Models section for installation of ARM (32-bit) driver on Windows 10 and above
 [SiLabsModelsSection.NTarm.10]
-%USB\VID_10C4&PID_EA60.DeviceDesc%      =SiLabsDDInstallSection, USB\VID_10C4&PID_EA60		; USB\VID_v(4)&PID_d(4)
+%USB\VID_10C4&PID_EA60.DeviceDesc%      =SiLabsDDInstallSection, USB\VID_10C4&PID_EA60
 %USB\VID_10C4&PID_EA63.DeviceDesc%      =SiLabsDDInstallSection, USB\VID_10C4&PID_EA63
-%USB\VID_10C4&PID_EA70&Mi_00.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA70&Mi_00	; USB\VID_v(4)&PID_d(4)&MI_z(2)
+%USB\VID_10C4&PID_EA70&Mi_00.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA70&Mi_00
 %USB\VID_10C4&PID_EA70&Mi_01.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA70&Mi_01
 %USB\VID_10C4&PID_EA71&Mi_00.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA71&Mi_00
 %USB\VID_10C4&PID_EA71&Mi_01.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA71&Mi_01
@@ -63,9 +63,9 @@ PnpLockDown=1	; "a driver package should set PnpLockDown to 1" -- MSDN
 
 ;Models section for installation of ARM (64-bit) driver on Windows 10 and above
 [SiLabsModelsSection.NTarm64.10]
-%USB\VID_10C4&PID_EA60.DeviceDesc%      =SiLabsDDInstallSection, USB\VID_10C4&PID_EA60		; USB\VID_v(4)&PID_d(4)
+%USB\VID_10C4&PID_EA60.DeviceDesc%      =SiLabsDDInstallSection, USB\VID_10C4&PID_EA60
 %USB\VID_10C4&PID_EA63.DeviceDesc%      =SiLabsDDInstallSection, USB\VID_10C4&PID_EA63
-%USB\VID_10C4&PID_EA70&Mi_00.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA70&Mi_00	; USB\VID_v(4)&PID_d(4)&MI_z(2)
+%USB\VID_10C4&PID_EA70&Mi_00.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA70&Mi_00
 %USB\VID_10C4&PID_EA70&Mi_01.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA70&Mi_01
 %USB\VID_10C4&PID_EA71&Mi_00.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA71&Mi_00
 %USB\VID_10C4&PID_EA71&Mi_01.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA71&Mi_01
@@ -80,9 +80,9 @@ PnpLockDown=1	; "a driver package should set PnpLockDown to 1" -- MSDN
 
 ;Models section for installation of x86 driver on Windows 10 and above
 [SiLabsModelsSection.NTx86.10]
-%USB\VID_10C4&PID_EA60.DeviceDesc%      =SiLabsDDInstallSection, USB\VID_10C4&PID_EA60		; USB\VID_v(4)&PID_d(4)
+%USB\VID_10C4&PID_EA60.DeviceDesc%      =SiLabsDDInstallSection, USB\VID_10C4&PID_EA60
 %USB\VID_10C4&PID_EA63.DeviceDesc%      =SiLabsDDInstallSection, USB\VID_10C4&PID_EA63
-%USB\VID_10C4&PID_EA70&Mi_00.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA70&Mi_00	; USB\VID_v(4)&PID_d(4)&MI_z(2)
+%USB\VID_10C4&PID_EA70&Mi_00.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA70&Mi_00
 %USB\VID_10C4&PID_EA70&Mi_01.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA70&Mi_01
 %USB\VID_10C4&PID_EA71&Mi_00.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA71&Mi_00
 %USB\VID_10C4&PID_EA71&Mi_01.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA71&Mi_01
@@ -96,26 +96,24 @@ PnpLockDown=1	; "a driver package should set PnpLockDown to 1" -- MSDN
 %USB\VID_10C4&PID_EA7B&Mi_03.DeviceDesc%=SiLabsDDInstallSection, USB\VID_10C4&PID_EA7B&Mi_03
 
 
-;DDInstall sections
-; Note: If/as we are building a Universal driver package, we can not use a DefaultInstall section.
+;DDInstall section
 [SiLabsDDInstallSection]
 AddReg=silabser.AddReg
 CopyFiles=Silabser_CopyFiles_FileListSection
-FeatureScore=0x40	; a single-byte hexadecimal number between 0x00 and 0xFF, A lower featurescore value specifies a better feature score rank, where 0x00 is the best feature score rank.
+FeatureScore=0x40
 
 
-;DDInstall.Services sections
-; Note: If/as we are building a Universal driver package, we can not use a DefaultInstall.Services section.  TODO: Enstone; Says Who/What? Confirm
+;DDInstall.Services section
 [SiLabsDDInstallSection.Services]
 AddService = silabser,0x00000002,silabser.AddService
 
 
 [silabser.AddService]
 DisplayName    = %silabser.SvcDesc%
-ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
-StartType      = 3                  ; SERVICE_DEMAND_START
-ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
-ServiceBinary  = %13%\silabser.sys
+ServiceType    = 1
+StartType      = 3
+ErrorControl   = 1
+ServiceBinary  = %12%\silabser.sys
 
 ; common registry entries 
 [silabser.AddReg]
@@ -127,7 +125,7 @@ HKR,,InitialLineControl,, "8N1"				;8-bits, No parity, 1 stop bit
 HKR,,PortSubClass,1,01
 HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
 
-;DDInstall.HW sections
+;DDInstall.HW section
 [SiLabsDDInstallSection.HW]
 AddReg=SiLabsDDInstallSection.HW.AddReg
 
@@ -157,13 +155,15 @@ silabser.sys = 1,\x86
 
 
 [DestinationDirs]
-Silabser_CopyFiles_FileListSection = 13 ; Driver package's Driver Store directory (%WINDIR%\System32\DriverStore\FileRepository ) (was 12 Drivers directory (%SystemRoot%\system32\drivers))
+Silabser_CopyFiles_FileListSection = 12 ; 13 = Driver package's Driver Store directory (%WINDIR%\System32\DriverStore\FileRepository); 12 = Drivers directory (%SystemRoot%\system32\drivers)) (make sure "ServiceBinary  =" matches usage of 12 vs. 13)
 
 
 ;---------------------------------------------------------------;
 
 [Strings]
+; For provider, enter your Company Legal/Offical/Long/Full Name
 Provider="Silicon Laboratories Inc."
+; For ManufacturerName, enter your Company "Colloquial" Name
 ManufacturerName="Silicon Labs"
 Disk_Description=                      "Silicon Labs CP210x USB to UART Bridge Installation Disk"
 USB\VID_10C4&PID_EA60.DeviceDesc=      "Silicon Labs CP210x USB to UART Bridge"
@@ -180,4 +180,5 @@ USB\VID_10C4&PID_EA7B&Mi_00.DeviceDesc="Silicon Labs Quad CP2108 USB to UART Bri
 USB\VID_10C4&PID_EA7B&Mi_01.DeviceDesc="Silicon Labs Quad CP2108 USB to UART Bridge: Interface 1"
 USB\VID_10C4&PID_EA7B&Mi_02.DeviceDesc="Silicon Labs Quad CP2108 USB to UART Bridge: Interface 2"
 USB\VID_10C4&PID_EA7B&Mi_03.DeviceDesc="Silicon Labs Quad CP2108 USB to UART Bridge: Interface 3"
+
 silabser.SvcDesc="Silicon Labs CP210x USB to UART Bridge Driver"

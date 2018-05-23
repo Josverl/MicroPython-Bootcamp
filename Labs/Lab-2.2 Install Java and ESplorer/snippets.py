@@ -92,16 +92,27 @@ for row in networks:
 del _f
 
 #----------
-# Start FTP Server
+# Snippet: FTP Server
 # Lobo Specific 
 #-----------
 import network,time
 network.ftp.start(user="micro", password="python")
-#network.telnet.start(user="micro", password="python")
 
 time.sleep(1)
 _=network.ftp.status()
-print("FTP server: {}, {}".format(_[2],_[3]))
+print("FTP server: {}, {} on {}".format(_[2],_[3],_[4]))
+
+#----------
+# Snippet: Telnet Server
+# Lobo Specific 
+#-----------
+import network,time
+network.telnet.start(user="micro", password="python")
+
+time.sleep(1)
+_=network.telnet.status()
+print("Telnet server: {} on {}".format(_[1],_[2]))
+
 
 #----------
 # Dir / ls 
