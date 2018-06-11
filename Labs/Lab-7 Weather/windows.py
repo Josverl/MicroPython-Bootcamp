@@ -48,7 +48,7 @@ def header(text='',fg=tft.YELLOW,bg=tft.MAROON):
     tft.setwin(1, 1, screen_w-2, header_h-2)
     tft.clearwin(bg)
     tft.font(tft.FONT_Comic, transparent = True )
-    tft.text(0,0,text,fg) 
+    tft.text(1,1,text,fg) 
     #restore window
     try:
         tft.restorewin()

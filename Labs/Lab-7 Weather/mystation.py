@@ -8,7 +8,7 @@ import time, gc
 from windows import *
 
 borders()
-header('JOS')
+header('Weatherstation')
 mainwindow()
 #----------------------
 #connect to the sensors 
@@ -55,6 +55,12 @@ thingspeakMqttApiKey = "ZWH8LQHCU7L9ETXA"           # EDIT - enter Thingspeak MQ
 thingspeakChannelId = "498254"                      # EDIT - enter Thingspeak Channel ID
 thingspeakChannelWriteApiKey = "FOU9KYJM6NDHH43F"   # EDIT - enter Thingspeak Write API Key
 
+#
+INTERVAL = const(60)
+lat = 52.019445
+lng = 4.431991
+
+
 thingspeakPort = 1883
 useSSL = False
 
@@ -76,14 +82,14 @@ else:
 #Load weatherundergound forecast function
 #load the weather forecast 
 #----------------------
-country, city ,forecast, weather = '?','?','?','?'
+country, city ,forecast, weather , temp = '?','?','?','?', 0
 try:
     
     from wunderground import *
     writeln('Retrieve the weather forecast')
     #get the weather forecast 
-    country, city ,forecast = getforecast()
-    country, city ,weather = getcurrentweather()
+    country, city ,forecast = getforecast(lat=lat,lng=lng)
+    country, city ,weather, temp = getcurrentweather(lat=lat,lng=lng)
     writeln('Recieved weather and forecast')
 except:
     writeln('Error')
@@ -103,26 +109,25 @@ pir = Pin(5, Pin.IN)
 # Now continue to poll, send , and update 
 # every x seconds
 #----------------------
-INTERVAL = const(10)
 while True:
     if pir.value() == 0:
         print("Turn the display off")
-        #tft.backlight(0)
+        tft.backlight(0)
     else:
-        print("People around")
+        #print("People around")
         tft.backlight(1)
     print('updating...')
     #Clean main window
     mainwindow()
     writeln("Today's observation for \n{}, {}:".format(country,city) )
-    writeln('{}'.format(weather) )
+    writeln('{}C , {}'.format(temp, weather) )
 
     writeln("Tomorow's forecast : " )
     writeln('{}\n'.format(forecast) )
     #-------------------
     #read local sensor
     if sensor.get_sensor_data():
-        output = "Temp {} C\nPress :{} hPa\nHumidity  {} RH\nPollution {} RES".format(
+        output = "Temp {} C\nPress :{} hPa\nHumidity  {} RH\nPolution {} RES".format(
             sensor.data.temperature,
             sensor.data.pressure,
             sensor.data.humidity,

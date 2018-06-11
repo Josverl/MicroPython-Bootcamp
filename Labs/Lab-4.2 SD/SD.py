@@ -20,16 +20,3 @@ def mountsd(addlib=True):
 
 mountsd(addlib=True)
 
-'''
-#if os.path.isdir("/home/el"))
-if os.path.exists("/sd/") and not os.path.exists("/sd/lib"):
-    try:
-        #create Library for modules on the sd card 
-        os.mkdir('/sd/lib')
-    except:
-        pass
-
-if os.path.exists("/sd/lib"):
-    #add to libray search path
-    sys.path.append('/sd/lib')
-'''

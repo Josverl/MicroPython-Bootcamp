@@ -57,7 +57,7 @@ mainwindow()
 header('Manual counting lines')
 mainwindow()
 width, height = tft.fontSize()
-#go one line down, Calculate the positin
+#go one line down, Calculate the position
 for n in range(20):
     tft.text(0,tft.LASTY + height+2 ,"Line {} ...............".format(n+1), color = tft.ORANGE)
     time.sleep(0.5)

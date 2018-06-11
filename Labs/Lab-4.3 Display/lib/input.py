@@ -8,6 +8,7 @@
 # Project home:
 #   https://github.com/tuupola/micropython-m5stack
 #
+# jos_verlinde : Update to add deinit()
 
 """
 Handle io pin as a digital input.
@@ -27,7 +28,10 @@ class DigitalInput(object):
         self._previous_state = False
         self._pin = pin
         self._pin.init(self._pin.IN)
-        self._pin.irq(trigger=trigger, handler=self._callback)
+        if not callback is None:
+            self._pin.irq(trigger=trigger, handler=self._callback)
+        else: 
+            self._pin.irq(trigger=trigger, handler=None)
 
     def _callback(self, pin):
         irq_state = machine.disable_irq()
@@ -53,3 +57,9 @@ class DigitalInput(object):
             self._user_callback(self._pin, self._current_state)
 
         machine.enable_irq(irq_state)
+
+    #add deregister 
+    def deinit(self):
+        #remove callback and trigger   
+        _ = self._pin.irq(handler=None, trigger=0)
+    

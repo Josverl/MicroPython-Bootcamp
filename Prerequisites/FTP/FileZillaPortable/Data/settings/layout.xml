@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <FileZilla3 version="3.31.0" platform="windows">
 	<Layout Builddate="2018-02-23" Buildtime="10:50:04">
 		<Resources>
@@ -13,7 +13,8 @@
 			<xrc file="update.xrc" date="1523442163" />
 		</Resources>
 		<Language id="nl_NL" date="1519379610">
-			<Font font="0;-15;0;0;0;400;0;0;0;1;0;0;5;0;Segoe UI" width="843" height="20" />
+			<Font font="0;-21;0;0;0;400;0;0;0;1;0;0;0;0;Segoe UI" width="1188" height="30" />
+			<Dialog name="Site Manager" width="1004" />
 		</Language>
 	</Layout>
 </FileZilla3>
