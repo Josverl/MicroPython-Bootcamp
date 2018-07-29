@@ -1,11 +1,15 @@
 # testado em 19 de Julho - FUNCIONA!!!
+# funcionando com latest LoBo 3.20 and M5GO modificado 
 # Dependencies
-# - in the /lib folder: bme680.py and constants.py
+# - in the /lib folder: bme680.py, i2c.py and constants.py
 # 
 import time, gc
 #----------------------
 # Initialisation 
 #----------------------
+if 'M5GO' in dir():
+    M5GO.i2c.deinit()
+
 #----------------------
 #connect to the sensors 
 #----------------------
@@ -33,8 +37,8 @@ while True:
             sensor.data.pressure,
             sensor.data.humidity,
             sensor.data.gas_resistance)
-        writeln('Data from local sensor:')    
-        writeln(output)
+        print('Data from local sensor:')    
+        print(output)
         #Send the data to TS 
         sensordata = "field1={:.1f}&field2={:.1f}&field3={:.1f}&field4={:.1f}\n".format(
             sensor.data.temperature,

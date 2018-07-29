@@ -28,6 +28,7 @@ SOFTWARE.
 '''
 try:
     from machine import I2C
+    from sys import platform
 except ImportError:
     raise ImportError("Can't find the micropython machine.I2C class: "
                       "perhaps you don't need this adapter?")
@@ -59,6 +60,12 @@ class I2CAdapter(I2C):
     def write_byte_data(self, addr, register, data):
         """ Write a single byte of data to register of device at addr
             Returns None """
+        if platform=='esp32_LoBo':
+            #convert data to buffered bytearray of 2 or 4 bytes 
+            if data > 0xFFFF:
+                data = data.to_bytes(4, 'little')
+            else:
+                data = data.to_bytes(2, 'little')
         return self.writeto_mem(addr, register, data)
 
     def write_i2c_block_data(self, addr, register, data):
