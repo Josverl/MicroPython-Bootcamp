@@ -17,7 +17,7 @@ The plan is to use ESP32 based hardware with SPI RAM to allow effective protytyp
 
 Firmware
 --------
-Teh bootcamp will use [MicroPython](http://micropython.org/)
+The bootcamp will use [MicroPython](http://micropython.org/)
 
 and specifically the  firmware developped by 
 [loboris / MicroPython_ESP32_psRAM_LoBo](https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo) 
