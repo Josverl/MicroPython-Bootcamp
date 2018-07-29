@@ -1,3 +1,11 @@
+#############################
+# MicroPython IoT Bootcamp  #
+# File name: constants.py   #
+# Last modified: 29/07/2018 #
+#############################
+
+# https://github.com/pimoroni/bme680
+
 # BME680 General config
 POLL_PERIOD_MS = 10
 

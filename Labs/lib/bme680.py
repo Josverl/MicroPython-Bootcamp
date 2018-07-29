@@ -1,8 +1,37 @@
+#############################
+# MicroPython IoT Bootcamp  #
+# File name: bme680.py      #
+# Last modified: 29/07/2018 #
+#############################
+
+"""
+Copyright (c) 2016 Pimoroni
+https://github.com/pimoroni/bme680
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 from constants import *
 import math
 import time
 
-__version__ = '1.0.2'
+__version__ = '1.0.5'
 
 class BME680(BME680Data):
     """BOSCH BME680
@@ -36,7 +65,7 @@ class BME680(BME680Data):
         self.set_temperature_oversample(OS_8X)
         self.set_filter(FILTER_SIZE_3)
         self.set_gas_status(ENABLE_GAS_MEAS)
-
+        self.set_temp_offset(0)
         self.get_sensor_data()
 
     def _get_calibration_data(self):
@@ -53,12 +82,23 @@ class BME680(BME680Data):
 
     def soft_reset(self):
         """Initiate a soft reset"""
-        self._set_regs(SOFT_RESET_ADDR, SOFT_RESET_CMD)
+        self._set_regs(SOFT_RESET_ADDR, SOFT_RESET_CMD) 
         time.sleep(RESET_PERIOD / 1000.0)
+
+    def set_temp_offset(self, value):
+        """Set temperature offset in celsius
+
+        If set, the temperature t_fine will be increased by given value in celsius.
+        :param value: Temperature offset in Celsius, eg. 4, -8, 1.25
+        """
+        if value == 0:
+            self.offset_temp_in_t_fine = 0
+        else:
+            self.offset_temp_in_t_fine = int(math.copysign((((int(abs(value) * 100)) << 8) - 128) / 5, value))
 
     def set_humidity_oversample(self, value):
         """Set humidity oversampling
-
+        
         A higher oversampling value means more stable sensor readings,
         with less noise and jitter.
 
@@ -77,7 +117,7 @@ class BME680(BME680Data):
 
     def set_pressure_oversample(self, value):
         """Set temperature oversampling
-
+        
         A higher oversampling value means more stable sensor readings,
         with less noise and jitter.
 
@@ -85,7 +125,7 @@ class BME680(BME680Data):
         causing a slower response time to fast transients.
 
         :param value: Oversampling value, one of: OS_NONE, OS_1X, OS_2X, OS_4X, OS_8X, OS_16X
-
+        
         """
         self.tph_settings.os_pres = value
         self._set_bits(CONF_T_P_MODE_ADDR, OSP_MSK, OSP_POS, value)
@@ -96,7 +136,7 @@ class BME680(BME680Data):
 
     def set_temperature_oversample(self, value):
         """Set pressure oversampling
-
+        
         A higher oversampling value means more stable sensor readings,
         with less noise and jitter.
 
@@ -104,7 +144,7 @@ class BME680(BME680Data):
         causing a slower response time to fast transients.
 
         :param value: Oversampling value, one of: OS_NONE, OS_1X, OS_2X, OS_4X, OS_8X, OS_16X
-
+        
         """
         self.tph_settings.os_temp = value
         self._set_bits(CONF_T_P_MODE_ADDR, OST_MSK, OST_POS, value)
@@ -115,7 +155,7 @@ class BME680(BME680Data):
 
     def set_filter(self, value):
         """Set IIR filter size
-
+        
         Optionally remove short term fluctuations from the temperature and pressure readings,
         increasing their resolution but reducing their bandwidth.
 
@@ -135,9 +175,9 @@ class BME680(BME680Data):
 
     def select_gas_heater_profile(self, value):
         """Set current gas sensor conversion profile: 0 to 9
-
+        
         Select one of the 10 configured heating durations/set points.
-
+        
         """
         if value > NBCONV_MAX or value < NBCONV_MIN:
             raise ValueError("Profile '{}' should be between {} and {}".format(value, NBCONV_MIN, NBCONV_MAX))
@@ -160,7 +200,7 @@ class BME680(BME680Data):
 
     def set_gas_heater_profile(self, temperature, duration, nb_profile=0):
         """Set temperature and duration of gas sensor heater
-
+        
         :param temperature: Target temperature in degrees celsius, between 200 and 400
         :param durarion: Target duration in milliseconds, between 1 and 4032
         :param nb_profile: Target profile, between 0 and 9
@@ -173,7 +213,7 @@ class BME680(BME680Data):
         """Set gas sensor heater temperature
 
         :param value: Target temperature in degrees celsius, between 200 and 400
-
+        
         When setting an nb_profile other than 0,
         make sure to select it with select_gas_heater_profile.
 
@@ -195,7 +235,7 @@ class BME680(BME680Data):
 
         When setting an nb_profile other than 0,
         make sure to select it with select_gas_heater_profile.
-
+        
         """
         if nb_profile > NBCONV_MAX or value < NBCONV_MIN:
             raise ValueError("Profile '{}' should be between {} and {}".format(nb_profile, NBCONV_MIN, NBCONV_MAX))
@@ -223,7 +263,7 @@ class BME680(BME680Data):
 
     def get_sensor_data(self):
         """Get sensor data.
-
+        
         Stores data in .data and returns True upon success.
 
         """
@@ -285,7 +325,7 @@ class BME680(BME680Data):
             return self._i2c.read_byte_data(self.i2c_addr, register)
         else:
             return self._i2c.read_i2c_block_data(self.i2c_addr, register, length)
-
+        
     def _calc_temperature(self, temperature_adc):
         var1 = (temperature_adc >> 3) - (self.calibration_data.par_t1 << 1)
         var2 = (var1 * self.calibration_data.par_t2) >> 11
@@ -293,7 +333,7 @@ class BME680(BME680Data):
         var3 = ((var3) * (self.calibration_data.par_t3 << 4)) >> 14
 
         # Save teperature data for pressure calculations
-        self.calibration_data.t_fine = (var2 + var3)
+        self.calibration_data.t_fine = (var2 + var3) + self.offset_temp_in_t_fine
         calc_temp = (((self.calibration_data.t_fine * 5) + 128) >> 8)
 
         return calc_temp
@@ -353,6 +393,9 @@ class BME680(BME680Data):
         var2 = (((gas_res_adc << 15) - (16777216)) + var1)
         var3 = ((lookupTable2[gas_range] * var1) >> 9)
         calc_gas_res = ((var3 + (var2 >> 1)) / var2)
+
+        if calc_gas_res < 0:
+            calc_gas_res = (1<<32) + calc_gas_res
 
         return calc_gas_res
 

@@ -1,3 +1,9 @@
+#############################
+# MicroPython IoT Bootcamp  #
+# File name: i2c.py         #
+# Last modified: 29/07/2018 #
+#############################
+
 '''
 Copyright (c) 2017 Robin
 https://github.com/robmarkcole/bme680-mqtt-micropython
