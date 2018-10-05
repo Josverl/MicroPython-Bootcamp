@@ -3,6 +3,7 @@
 The first step is to download and install Visual Studio Code (if you already have it, skip to the next step).
 To download Visual Studio Code, navigate to [VS Code](https://code.visualstudio.com/).
 
+![](./images/vscode.png)
 
 # Microsoft Python plugin
 
