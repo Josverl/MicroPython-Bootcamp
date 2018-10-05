@@ -1,7 +1,12 @@
 # Visual Studio Code
 
-Pycom also supports Microsoft's Visual Studio Code IDE platform with the Pymakr Plugin. To download Visual Studio Code, navigate to [VS Code](https://code.visualstudio.com/).
+The first step is to download and install Visual Studio Code (if you already have it, skip to the next step).
+To download Visual Studio Code, navigate to [VS Code](https://code.visualstudio.com/).
 
+
+# Microsoft Python plugin
+
+# NodeJS
 You will also need NodeJS installed on your PC. Please download the latest LTS version available [from the NodeJS website.](https://nodejs.org/)
 
 Please follow these steps to install the Pymakr VSCode Extension:
