@@ -2,6 +2,7 @@
 The first step is to download and install [Visual Studio Code] (https://code.visualstudio.com/) (if you already have it, skip to the next step).
 
 ![](./images/vscode.png)
+
 After the download is done, click on the executable to install
 Use the default settings (next, next, finish)
 
@@ -36,7 +37,14 @@ Please follow these steps to install the Pymakr VSCode Extension:
 Download and install the SiLabs CP2104 Driver. Use the Default version.
 Do NOT use the Windows 10 Universal (v10.1.1) driver! If you happen to download the universal version, you may need to manually revert to 6.7.6 on a regular basis as Windows will repeatedly use the newer, incorrect driver after each Windows update.
 
-![](./images/CP2104.png) | ![](./images/CP2104.png)
+![](./images/CP2104.png) | ![](./images/driver.png)
+
+After download, unzip the file and run the appropriate version according:
+CP210xVCPInstaller_x86.exe for 32 bit
+CP210xVCPInstaller_x64.exe for 64 bit
+Complete the install wizard by accepting the license agreement and with the default settings (next, next, finish)
+
+https://m5stack.readthedocs.io/en/latest/get-started/establish_serial_connection.html
 
 ## Connecting via Serial USB
 
