@@ -36,7 +36,7 @@ Please follow these steps to install the Pymakr VSCode Extension:
 Download and install the SiLabs CP2104 Driver. Use the Default version.
 Do NOT use the Windows 10 Universal (v10.1.1) driver! If you happen to download the universal version, you may need to manually revert to 6.7.6 on a regular basis as Windows will repeatedly use the newer, incorrect driver after each Windows update.
 
-![](./images/CP2104.png)
+![](./images/CP2104.png) | ![](./images/CP2104.png)
 
 ## Connecting via Serial USB
 
