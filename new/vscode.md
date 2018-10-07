@@ -53,11 +53,11 @@ After installing the Pymakr Plugin, you need to take a few seconds to configure 
 1. Connect your M5Stack device to your computer via USB. 
 2. Open Visual Studio Code and check if the Pymakr Plugin has correctly installed. If you get an error NodeJS is missing, reboot youy computer and try again.
 
-![](./images/CP2104.png) | ![](./images/vscode5.png)
+![](./images/vscode5.png)
 
 3. Click `All commands` on the bottom of the Visual Studio Code window and in the list that appears, click `Pymakr > Extra > List Serial Ports`. This will list the available serial ports. If Pymakr is able to auto-detect which to use, this will be copied to your clipboard. If not please manually copy the correct serial port.
 
-![](./images/CP2104.png) | ![](./images/vscode6.png)
+![](./images/vscode6.png)
 
 4. Once again click `All commands`, then click `Pymakr > Global Settings`. This will open a JSON file. Paste the serial address you copied earlier into the field `address` and save the file. Finally close and save the JSON file, click `All commands`, then `Pymakr > Connect` to connect your device. The Pymakr console should show three arrows `>>>`, indicating that you are connected.
 
