@@ -50,35 +50,17 @@ https://m5stack.readthedocs.io/en/latest/get-started/establish_serial_connection
 
 After installing the Pymakr Plugin, you need to take a few seconds to configure it for first time use. Please follow these steps:
 
-1. Connect your Pycom device to your computer via USB. If you are using an
+1. Connect your M5Stack device to your computer via USB. 
+2. Open Visual Studio Code and check if the Pymakr Plugin has correctly installed. If you get an error NodeJS is missing, reboot youy computer and try again.
 
-   Expansion Board, and have just finished a firmware upgrade, be sure to **Remove**
+![](./images/CP2104.png) | ![](./images/vscode5.png)
 
-   **the wire between GND and G23** and reset your device by pressing the button.
+3. Click `All commands` on the bottom of the Visual Studio Code window and in the list that appears, click `Pymakr > Extra > List Serial Ports`. This will list the available serial ports. If Pymakr is able to auto-detect which to use, this will be copied to your clipboard. If not please manually copy the correct serial port.
 
-2. Open Visual Studio Code and ensure that the Pymakr Plugin has correctly installed.
+![](./images/CP2104.png) | ![](./images/vscode6.png)
 
-![](../../.gitbook/assets/vsc_config_step_1-1.png)
+4. Once again click `All commands`, then click `Pymakr > Global Settings`. This will open a JSON file. Paste the serial address you copied earlier into the field `address` and save the file. Finally close and save the JSON file, click `All commands`, then `Pymakr > Connect` to connect your device. The Pymakr console should show three arrows `>>>`, indicating that you are connected.
 
-3. Click `All commands` on the bottom of the Visual Studio Code window
-
-![](../../.gitbook/assets/vsc_config_step_2-1.png)
-
-4. In the list that appears, click `Pymakr > Extra > List Serial Ports`
-
-![](../../.gitbook/assets/vsc_config_step_3-1.png)
-
-5. This will list the available serial ports. If Pymakr is able to auto-detect which to use, this will be copied to your clipboard. If not please manually copy the correct serial port.
-
-![](../../.gitbook/assets/vsc_config_step_4.png)
-
-6. Once again click `All commands`, then click `Pymakr > Global Settings`. This will open a JSON file. Paste the serial address you copied earlier into the field `address` and save the file.
-
-![](../../.gitbook/assets/vsc_config_step_5-1.png)
-
-7. Finally close the JSON file, click `All commands`, then `Pymakr > Connect` to connect your device. The Pymakr console should show three arrows `>>>`, indicating that you are connected
-
-![](../../.gitbook/assets/vsc_config_step_6%20%281%29.png)
 
 These settings can also be applied on a per project basis by clicking `All commands` then `Pymakr > Project Settings`. This will open a JSON file which you can edit to enter your desired settings for the currently open project.
 
