@@ -21,15 +21,15 @@ To install the Pymakr VSCode Extension open VSCode.
 
 Navigate to the Extensions page, using the 5th button in the left navigation
 
-![](./images/vscode1.png)
+![](./images/vscode2.png)
 
 Search for `Pymakr` and click the install button next to it.
 
-![](./images/vscode2.png)
+![](./images/vscode3.png)
 
 Within a few minutes, a reload button should appear. Press it to reload VSCode.
 
-![](./images/vscode3.png)
+![](./images/vscode4.png)
 
 That’s it! You’ve installed the Pymakr Extension for VSCode
 
