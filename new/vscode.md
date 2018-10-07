@@ -21,19 +21,17 @@ To install the Pymakr VSCode Extension open VSCode.
 
 Navigate to the Extensions page, using the 5th button in the left navigation
 
-![](../../.gitbook/assets/vsc_setup_step_2-1.png)
+![](./images/vscode1.png)
 
 Search for `Pymakr` and click the install button next to it.
 
-![](../../.gitbook/assets/vsc_setup_step_3.png)
+![](./images/vscode2.png)
 
-4. Within a few minutes, a reload button should appear. Press it to reload VSCode.
+Within a few minutes, a reload button should appear. Press it to reload VSCode.
 
-![](../../.gitbook/assets/vsc_setup_step_4.png)
+![](./images/vscode3.png)
 
-5. That’s it! You’ve installed the Pymakr Extension for VSCode
-
-![](../../.gitbook/assets/vsc_setup_step_5%20%281%29.png)
+That’s it! You’ve installed the Pymakr Extension for VSCode
 
 # SiLabs CP2104 Driver
 Download and install the SiLabs CP2104 Driver. Use the Default version.
