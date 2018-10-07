@@ -23,7 +23,7 @@ Navigate to the Extensions page, using the 5th button in the left navigation
 
 ![](../../.gitbook/assets/vsc_setup_step_2-1.png)
 
-3. Search for `Pymakr` and click the install button next to it.
+Search for `Pymakr` and click the install button next to it.
 
 ![](../../.gitbook/assets/vsc_setup_step_3.png)
 
