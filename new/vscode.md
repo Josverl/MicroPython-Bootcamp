@@ -9,7 +9,11 @@ Use the default settings (next, next, finish)
 # Microsoft Python plugin
 
 # NodeJS
-You will also need NodeJS installed on your PC. Please download the latest LTS version available [from the NodeJS website.](https://nodejs.org/)
+You will also need NodeJS installed on your PC (it is a pre-requisite to the VS Code extension we will install next). Please download the latest LTS version available [from the NodeJS website.](https://nodejs.org/)
+
+![](./images/nodejs.png)
+
+# Pymakr VSCode Extension
 
 Please follow these steps to install the Pymakr VSCode Extension:
 
