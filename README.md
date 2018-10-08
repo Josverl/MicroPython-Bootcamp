@@ -1,25 +1,25 @@
-# MicroPython-Bootcamp
+# MicroPython-IoT-Bootcamp
 
-The goal of this repo is to hold the materials for a MicroPython IoT Bootcamp.
+The goal of this repository is to hold the materials for a MicroPython IoT Bootcamp.
 
 This Bootcamp has the following main goals:
 
 * Transfer knowledge and information to create rapid prototypes
 * Show the art of the possible using simple devices 
-* Learn to use these devices in combination with simple and more complex cloud services Using both Micosoft and other technologies
+* Learn to use these devices in combination with simple and more complex cloud services 
 * Allow the participant use the knowledge during provided Labs
-* Allow the participants to use this knowledge to envision possibilitiues for the use of IoT in production environments.
-* Take the solutions (both Software and Devices) back to their workplace or home to continue learning and expirimentation.
+* Allow the participants to use this knowledge to envision possibilitiues for the use of IoT in production environments
+* Take the solutions (both Software and Devices) back to their workplace or home to continue learning and experimenting
 
 Hardware
 --------
-The plan is to use ESP32 based hardware with SPI RAM to allow effective protytyping withouth the need to write highly optimised code.
+M5Stack development kit will be used during the bootcamp. However most of the course can be run on any ESP32 based development board
 
 Firmware
 --------
 The bootcamp will use [MicroPython](http://micropython.org/)
 
-and specifically the  firmware developped by 
+and specifically the firmware developped by 
 [loboris / MicroPython_ESP32_psRAM_LoBo](https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo) 
 
 IDE Tooling
