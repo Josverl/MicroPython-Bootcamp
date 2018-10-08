@@ -4,6 +4,7 @@ The first step is to download and install [Visual Studio Code] (https://code.vis
 ![](./images/vscode.png)
 
 After the download is done, click on the executable to install
+
 Use the default settings (next, next, finish)
 
 # Microsoft Python plugin
