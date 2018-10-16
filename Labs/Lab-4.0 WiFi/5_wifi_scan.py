@@ -1,8 +1,8 @@
 def wifiscan():
     #Scan for accesspoints
     #and display them sorted by network strength
-    import network;
-    _nic = network.WLAN(network.STA_IF);
+    import network #pylint: disable=import-error
+    _nic = network.WLAN(network.STA_IF)
     _ = _nic.active(True)
     #sort on signal strength 
     _networks = sorted(_nic.scan(), key=lambda x: x[3], reverse=True)
@@ -12,4 +12,9 @@ def wifiscan():
         print( _f.format( *row ) ) 
     del _f
 
-wifiscan()
+def main():
+    wifiscan()
+
+if __name__ == '__main__':
+    main()
+

@@ -1,3 +1,4 @@
+#pragma pylint: disable=E0001
 #-----------------------------------------------------
 # connect to the network details stored in myconfig 
 # if no connection is possible , then re-start as an 
@@ -5,7 +6,7 @@
 #-----------------------------------------------------
 
 def do_connect():
-    import network, time
+    import network, time #pylint: disable=import-error
     #read network info from : myconfig.py
     from myconfig import wifi_ssid , wifi_psk
     wlan = network.WLAN(network.STA_IF)
@@ -34,6 +35,7 @@ def do_connect():
         # Set the authentication mode and password
         ap.config(authmode=network.AUTH_WPA_PSK, password=wifi_psk)
 
+
 def settime():
     #Get curent time from the internet
     #generic Micropython settime does not work on lobo 
@@ -43,7 +45,7 @@ def settime():
     from myconfig import timezone
     my_timezone = timezone # found in second field, text before the coma, in https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo/blob/master/MicroPython_BUILD/components/micropython/docs/zones.csv
     rtc = machine.RTC()
-    rtc.init((2018, 01, 01, 12, 12, 12))
+    rtc.init((2018, 01, 01, 12, 12, 12))  
     rtc.ntp_sync(server= "", tz=my_timezone, update_period=3600)
 
 do_connect()

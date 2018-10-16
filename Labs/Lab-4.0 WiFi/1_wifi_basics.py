@@ -1,9 +1,11 @@
 # network module
 #This module provides access to various network related functions and classes.
 
-import network
+import network 
+#pylint: disable=import-error
 
-help(network)
+
+dir(network)
 
 # create station interface - Standard WiFi client 
 wifi = network.WLAN(network.STA_IF) 
