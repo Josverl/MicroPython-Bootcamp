@@ -22,7 +22,7 @@ def log(message):
 # Connect to WiFi 
 def connect_wifi():
     "Connect to WiFi"
-    import network, time
+    import network, utime as time
     #read network info from : myconfig.py
     try:
         from myconfig import wifi_ssid , wifi_psk
