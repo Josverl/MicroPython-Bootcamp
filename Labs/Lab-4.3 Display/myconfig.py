@@ -1,6 +1,20 @@
-#WLan or AccessPoint Details
-wifi_ssid=b'Atticware'
-wifi_psk=b'!!DAF66!!'
-# found in second field, text before the coma, in https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo/blob/master/MicroPython_BUILD/components/micropython/docs/zones.csv
-timezone=b'CET-1CEST'
- 
+"Retrieve or set the configuration used"
+from machine import nvs_getstr,nvs_setstr,loglevel,LOG_NONE #pylint: disable=import-error
+#
+loglevel('nvs',LOG_NONE)
+wifi_ssid = nvs_getstr('SSID')
+if not wifi_ssid:
+    wifi_ssid=b'IOTBOOTCAMP'
+
+wifi_psk = nvs_getstr('PSK')
+if not wifi_psk:
+    wifi_psk = 'MicroPython'
+   
+'''
+Use the below commands to store an override in NVRAM 
+
+from machine import nvs_getstr,nvs_setstr
+nvs_setstr('SSID',b'MyWiFi')
+nvs_setstr('PSK',b'WiFi-Password')
+
+''' 

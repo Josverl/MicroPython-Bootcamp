@@ -1,5 +1,5 @@
 
-import displaydemo as dd
+import displaydemos as dd
 help(dd)
 
 

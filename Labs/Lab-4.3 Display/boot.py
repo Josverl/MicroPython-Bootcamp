@@ -47,17 +47,3 @@ get_networktime()
 
 
 import network,time
-if False:
-    time.sleep(3)
-    network.ftp.start(user="micro", password="python")
-    #network.telnet.start(user="micro", password="python")
-    time.sleep(1)
-    _=network.ftp.status()
-    print("FTP server: {}, {}".format(_[2],_[3]))
-
-
-
-#Get curent time from the internet
-#standard Micropython does not work on lobo 
-#from ntptime import settime
-#settime()

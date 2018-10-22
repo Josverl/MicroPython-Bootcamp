@@ -5,6 +5,13 @@ Date:   08/10/2017
 
 """
 
+#todo: make some changes to provide a better demo 
+# 1) make into a proper module 
+# 2) only init tft when there is no tft instance already initialised 
+# 3) set a better SPI Speed - 40 Mhz 
+# 4) update with additional demo's with newer functionality ?
+
+
 import machine, display, time, math
 
 tft = display.TFT()
@@ -22,7 +29,6 @@ tft.orient(tft.LANDSCAPE)
 # Others...
 #tft.init(tft.ILI9341, width=240, height=320, miso=19,mosi=23,clk=18,cs=5,dc=26,tcs=27,hastouch=True, bgr=True)
 #tft.init(tft.ST7735R, speed=10000000, spihost=tft.HSPI, mosi=13, miso=12, clk=14, cs=15, dc=27, rst_pin=26, hastouch=False, bgr=False, width=128, height=160)
-
 
 def testt():
     while True:
