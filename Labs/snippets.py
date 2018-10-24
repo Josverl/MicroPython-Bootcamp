@@ -123,3 +123,57 @@ if not 'ls' in dir():
     from upysh import *
 ls
 
+#------------------------------
+# Srtring formatting
+# https://pyformat.info/#simple
+#----------------------------- 
+
+#basic New
+'{} {}'.format('one', 'two')
+#basic Old
+'%s %s' % ('one', 'two')
+
+
+#print infromation from a dict 
+data = {'first': 'Jos', 'last': 'Verlinde'}
+print('{first} {last}'.format(**data) )
+#or
+'{first} {last}'.format(first='Hodor', last='Hodor!')
+
+#Padding and aligning strings
+#Align right:
+'{:>10}'.format('test')
+
+#Align left:
+'{:10}'.format('test')
+#or 
+'{:<10}'.format('test')
+
+#Padding numbers
+#Similar to strings numbers can also be constrained to a specific width.
+'{:4d}'.format(42)
+
+
+#For floating points the padding value represents the length of the complete output. In the example below we want our output to have at least 6 characters with 2 after the decimal point.
+'{:6.2f}'.format(3.141592653589793)
+#leading zero
+'{:06.2f}'.format(3.141592653589793)
+
+
+#For integer values providing a precision doesn't make much sense and is actually forbidden in the new style (it will result in a ValueError).
+'{:04d}'.format(42)
+
+#Signed
+'{:+4d}'.format(42)
+
+#Use a space character to indicate that negative numbers should be prefixed with a minus symbol and a leading space should be used for positive ones.
+'{: d}'.format((- 23))
+
+
+#Datetime
+New style formatting also allows objects to control their own rendering. This for example allows datetime objects to be formatted inline:
+This operation is not available with old-style formatting.
+
+todo: Add Micropython 
+
+
