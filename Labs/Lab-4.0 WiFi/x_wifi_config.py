@@ -43,7 +43,9 @@ def settime():
     from myconfig import timezone
     my_timezone = timezone # found in second field, text before the coma, in https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo/blob/master/MicroPython_BUILD/components/micropython/docs/zones.csv
     rtc = machine.RTC()
+    #Set the system time and date.
     rtc.init((2018, 01, 01, 12, 12, 12))
+    #configure to sync the time every hour with a Network Time Protocol (NTP) server
     rtc.ntp_sync(server= "", tz=my_timezone, update_period=3600)
 
 do_connect()

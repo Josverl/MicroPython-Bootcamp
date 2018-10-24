@@ -6,7 +6,8 @@ import network,time #pylint: disable=import-error
 
 # create Access Point interface 
 ap = network.WLAN(network.AP_IF) 
-# activate the interface
+
+# activate the AccessPoint Interface with default settings 
 ap.active(True)
 
 # Wait until started and show IF config

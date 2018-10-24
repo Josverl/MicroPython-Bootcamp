@@ -8,10 +8,23 @@ import network,utime #pylint: disable=import-error
 # Define callback function used for monitoring wifi activity
 # ----------------------------------------------------------
 
+
+'''
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+'''
+
+
 def wifi_cb(info):
-    _red = "\u001b[31m"
-    _cyan= "\u001b[36m"
-    _norm = "\u001b[00m"
+    _red = "\033[31m"
+    _cyan= "\033[36m"
+    _norm = "\033[00m"
     if (info[2]):
         msg = ", info: {}".format(info[2])
     else:
