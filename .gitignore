@@ -4,11 +4,18 @@ SubModules/*
 #extracted Filezilla 
 Prerequisites/FTP/FileZillaPortable
 
-Labs/lab-4.6 motion tracking/donotuse
-Prerequisites/ESPlorer/ESPlorer.Log
-Labs/Lab-x.x MQTT ThingSpeak/Traces/
+*/*/ESPlorer.Log
+
 fonts/
 Prerequisites/USB/CP210x_Universal_Windows_Driver_old.zip
 Prerequisites/USB/CP210x_Universal_Windows_Driver_old/
 DryRun/
-Labs/Lab-7 Weather/.vscode/
+
+#ignore folders for troubleshooting
+Labs/*/Traces/
+Labs/*/Scratch/
+Labs/*/donotuse
+
+#ignore VSCode and python cache in (all) the Demo and Labs folders 
+*/*/.vscode/
+*/*/__pycache__/

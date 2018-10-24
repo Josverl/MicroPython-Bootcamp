@@ -1,0 +1,9 @@
+{
+    "start": "app",
+    "server": "Flow.m5stack.com", 
+    "wifi": {
+        "ssid": "",
+        "password": ""
+    },
+    "wifi_history": []
+}
