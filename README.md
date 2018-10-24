@@ -13,18 +13,18 @@ This Bootcamp has the following main goals:
 
 Hardware
 --------
-The plan is to use ESP32 based hardware with SPI RAM to allow effective protytyping withouth the need to write highly optimised code.
+The plan is to use ESP32 based hardware with SPI RAM support to allow effective protytyping without the need to write highly optimised code.
 
 Firmware
 --------
-Teh bootcamp will use [MicroPython](http://micropython.org/)
-
-and specifically the  firmware developped by 
+The bootcamp will use [MicroPython](http://micropython.org/) and specifically the firmware for the ESP32 developped by 
 [loboris / MicroPython_ESP32_psRAM_LoBo](https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo) 
 
 IDE Tooling
 -----------
-The Labs will make use of a fork of ESPlorer: [Josverl/ESPlorer](https://github.com/Josverl/ESPlorer) which is a simple IDE and this fork has specific support for MicroPython.
+The Labs will make use of[ Visual Studio Code](https://code.visualstudio.com/Download) in combination with the [pymakr](https://docs.pycom.io/pymakr/installation/vscode) add-in by Pycom, which graciously also supports non-pycom boards running Micropython .
+
+Earlier versions of this material made use of a fork of ESPlorer: [Josverl/ESPlorer](https://github.com/Josverl/ESPlorer) which is a simple IDE and this fork has specific support for MicroPython.
 
 ## Project Structure
 Code, Documentation and required binaries are located in the following structure:
