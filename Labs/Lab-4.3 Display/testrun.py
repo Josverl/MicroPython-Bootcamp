@@ -57,23 +57,3 @@ def mainwindow(clear=True,color=tft.BLUE):
         else :
             tft.text(0,0,'',tft.BLACK) 
             
-#==================================================================
-
-borders()
-header('empty')
-mainwindow()
-
-import micropython
-import gc
-
-
-for n in range(50):
-    #micropython.mem_info()
-    print("RUNNING")
-    exec(open('satimage.py').read(),globals())
-    #micropython.mem_info()
-    #print("cleaning")
-    gc.collect()
-    micropython.mem_info()
-    print(n, 'Waiting...')
-    time.sleep(60*10)

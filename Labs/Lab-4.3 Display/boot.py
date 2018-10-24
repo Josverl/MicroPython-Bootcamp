@@ -47,3 +47,4 @@ get_networktime()
 
 
 import network,time
+from upysh import *

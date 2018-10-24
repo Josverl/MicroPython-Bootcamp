@@ -1,9 +1,7 @@
 
-import displaydemos as dd
-help(dd)
+from displaydemos import *
 
-
-Demo.ellipseDemo()
+ellipseDemo()
 Demo.fontDemo()
 
 
