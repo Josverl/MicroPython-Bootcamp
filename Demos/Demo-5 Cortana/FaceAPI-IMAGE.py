@@ -1,18 +1,13 @@
-"""try: 
-    import urllib.urequest
-except:
-    import upip
-    upip.install('micropython-urllib')
-    #upip.install('micropython-urllib.parse')
-    upip.install('micropython-urllib.urequest')
-    #import urllib
-    import urllib.urequest
-
-
-"""
-
 import ujson
 import usocket
+import logging
+import gc
+
+log = logging.getLogger("POST")
+
+log.setLevel(logging.ERROR)
+#only during debug 
+log.setLevel(logging.DEBUG)
 
 def urlopen(url, data=None, method="GET", datafile=None):
     if data is not None and method == "GET":
@@ -34,34 +29,46 @@ def urlopen(url, data=None, method="GET", datafile=None):
         host, port = host.split(":", 1)
         port = int(port)
 
-    ai = usocket.getaddrinfo(host, port, 0, usocket.SOCK_STREAM)
+    ai = usocket.getaddrinfo(host, port , 0, usocket.SOCK_STREAM)
+    if ai==[] :
+        print('Error: No internet connectivity')
+        return None
+    log.debug(ai)
     ai = ai[0]
 
     s = usocket.socket(ai[0], ai[1], ai[2])
     try:
+        log.debug('Connecting')
         s.connect(ai[-1])
         if proto == "https:":
+            log.debug('Wrap SSL')
             s = ussl.wrap_socket(s, server_hostname=host)
-
-        s.write(method)
-        s.write(b" /")
-        s.write(path)
-        s.write(b" HTTP/1.0\r\nHost: ")
-        s.write(host)
-        s.write(b"\r\n")
+        #Just a copy
+        #s.write(b"{} /{} HTTP/1.0\r\n".format(method,path))
+        s.write(b"POST https://westeurope.api.cognitive.microsoft.com:443/face/v1.0/detect?returnFaceId=true&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise HTTP/1.1\r\n")
+        s.write(b"Ocp-Apim-Subscription-Key: 0366c4649003438ea99891d9006809bd\r\n")
+        s.write(b"Content-Type: application/octet-stream\r\n")
+        s.write(b"cache-control: no-cache\r\n")
+        s.write(b"Postman-Token: cb0d1225-c1c8-43c9-8711-594c43efad08\r\n")
+        s.write(b"User-Agent: PostmanRuntime/7.3.0\r\n")
+        s.write(b"Accept: */*\r\n")
+        s.write(b"Host: westeurope.api.cognitive.microsoft.com:443\r\n")
+        s.write(b"accept-encoding: gzip, deflate\r\n")
+        
 
         if data:
+            log.debug('Send Data')
             s.write(b"Content-Length: ")
             s.write(str(len(data)))
             s.write(b"\r\n")
         elif datafile:
-            s.write(b"Ocp-Apim-Subscription-Key: 0366c4649003438ea99891d9006809bd\r\n") 
-            s.write(b"Content-Type: application/octet-stream\r\n") 
-            s.write(b"cache-control: no-cache\r\n") 
-            s.write(b"Content-Length: ")
+            log.debug('Send binary Data File')
+            
+            s.write(b"content-length: ")
             s.write(str( 3806))             #todo: lookup length of file 
             s.write(b"\r\n")
-            s.write(b"Connection: close\r\n") 
+            s.write(b"Connection: keep-alive\r\n") 
+
         s.write(b"\r\n")
         if data:
             s.write(data)
@@ -71,51 +78,66 @@ def urlopen(url, data=None, method="GET", datafile=None):
                     data = f.read(512)  
                     if not data:
                         break
-                    print('write')
+                    log.debug('write')
                     s.write(data)
-
+        log.debug('------->>')
         l = s.readline()
+        log.debug('<<-------')
+        log.info(l)
+        log.debug('==')
+        
+        #Read the first status returned.
         l = l.split(None, 2)
         print(l)
         status = int(l[1])
+        #read through returned headers 
         while True:
             l = s.readline()
             if not l or l == b"\r\n":
                 break
-            #print(l)
+            log.debug(l)
             if l.startswith(b"Transfer-Encoding:"):
                 if b"chunked" in l:
                     raise ValueError("Unsupported " + l)
             elif l.startswith(b"Location:"):
                 raise NotImplementedError("Redirects not yet supported")
     except OSError:
+        log.debug("Error, closing socket")
         s.close()
         raise
-
+    s.setblocking(False)
     return s
 
 import gc;gc.collect()
 
-fname = 'foto/Jos.jpg'
-url = 'https://httpbin.org/post'
-url = 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=true'
+#url = 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=true'
 url = 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise'
-try:
-    socket = urlopen(url, method='POST',datafile='foto/Jos.jpg')
-    resp = socket.readline()
 
-except:
-    print("An Error while calling Face detection")
+fiddler = 'http://192.168.137.1:8888/face/v1.0/detect?returnFaceId=true&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise'
 
-finally:
-    socket.close()
+fname = '/flash/foto/Jos.jpg'
+s2 = urlopen(url, method='POST',datafile=fname)
+print("Returned")
+#Now read the response string 
+#Readline does not work :-( 
+resp_body=b""
+while True:
+    block = s2.read(512)
+    if block:
+        log.debug( 'recieving body..')
+        resp_body+=block
+    else:
+        log.debug( 'done')
+        break
+s2.close()
+gc.collect() #Free memory
 
-faces = ujson.loads(resp)
-
+#process the return 
+faces = ujson.loads(resp_body)
 for face in faces:
     print ("a {} year old {}".format( face['faceAttributes']['age'], face['faceAttributes']['gender']) )
 
-
+"""
 print( faces[0]['faceId'] )
 print( faces[0]['faceAttributes'] )
 print( faces[0]['faceAttributes']['gender'] )
@@ -131,5 +153,5 @@ emotion = faces[0]['faceAttributes']['emotion']
 print ( sorted(emotion, key=emotion.__getitem__) )
 # In order of sorted values: [1, 2, 3, 4]
 
-
+"""
 
