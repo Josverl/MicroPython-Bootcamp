@@ -2,13 +2,33 @@ import ujson
 import usocket
 import logging
 import gc
+import uos as os
 
+#Logging 
 log = logging.getLogger("POST")
-
 log.setLevel(logging.ERROR)
 #only during debug 
-log.setLevel(logging.DEBUG)
+#log.setLevel(logging.DEBUG)
 
+#Utility 
+def internet_connected():
+    "test actual internet connectivity"
+    try:
+        socket = urlopenbin(b'http://www.msftncsi.com/ncsi.txt')
+        resp = socket.readline()
+    finally:
+        if socket :
+            socket.close()
+    return (resp == b'Microsoft NCSI')
+    
+def filesize(fname):
+    try:
+        s = os.stat(fname)[6]
+    except:
+        s = 0 
+    return s
+
+#derived from urllib.urequests  module 
 def urlopen(url, data=None, method="GET", datafile=None):
     if data is not None and method == "GET":
         method = "POST"
@@ -43,18 +63,12 @@ def urlopen(url, data=None, method="GET", datafile=None):
         if proto == "https:":
             log.debug('Wrap SSL')
             s = ussl.wrap_socket(s, server_hostname=host)
-        #Just a copy
-        #s.write(b"{} /{} HTTP/1.0\r\n".format(method,path))
-        s.write(b"POST https://westeurope.api.cognitive.microsoft.com:443/face/v1.0/detect?returnFaceId=true&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise HTTP/1.1\r\n")
+        #HTTP Start 
+        s.write(b"{} /{} HTTP/1.0\r\n".format(method,path))
+        #Headers todo: Pass in headers  
         s.write(b"Ocp-Apim-Subscription-Key: 0366c4649003438ea99891d9006809bd\r\n")
-        s.write(b"Content-Type: application/octet-stream\r\n")
-        s.write(b"cache-control: no-cache\r\n")
-        s.write(b"Postman-Token: cb0d1225-c1c8-43c9-8711-594c43efad08\r\n")
-        s.write(b"User-Agent: PostmanRuntime/7.3.0\r\n")
-        s.write(b"Accept: */*\r\n")
-        s.write(b"Host: westeurope.api.cognitive.microsoft.com:443\r\n")
-        s.write(b"accept-encoding: gzip, deflate\r\n")
-        
+        s.write(b"Accept: application/json\r\n")
+        s.write(b"Host: {}:{}\r\n".format(host,port))
 
         if data:
             log.debug('Send Data')
@@ -63,10 +77,9 @@ def urlopen(url, data=None, method="GET", datafile=None):
             s.write(b"\r\n")
         elif datafile:
             log.debug('Send binary Data File')
-            
-            s.write(b"content-length: ")
-            s.write(str( 3806))             #todo: lookup length of file 
-            s.write(b"\r\n")
+            s.write(b"Content-Type: application/octet-stream\r\n")
+            s.write(b"cache-control: no-cache\r\n")
+            s.write(b"content-length: {}\r\n".format(str(filesize(datafile)) ))
             s.write(b"Connection: keep-alive\r\n") 
 
         s.write(b"\r\n")
@@ -80,9 +93,9 @@ def urlopen(url, data=None, method="GET", datafile=None):
                         break
                     log.debug('write')
                     s.write(data)
-        log.debug('------->>')
+        log.debug('---sent->>')
         l = s.readline()
-        log.debug('<<-------')
+        log.debug('<<-hdrs--')
         log.info(l)
         log.debug('==')
         
@@ -108,50 +121,59 @@ def urlopen(url, data=None, method="GET", datafile=None):
     s.setblocking(False)
     return s
 
-import gc;gc.collect()
+def face_detect (fname = None):
+    #url = 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise'
+    url = 'http://192.168.137.1:8888/face/v1.0/detect?returnFaceId=true&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise'
+    s2 = urlopen(url, method='POST',datafile=fname)
+    print("Returned")
+    #Readline does not work :-( 
+    resp_body=b""
+    while True:
+        block = s2.read(512)
+        if block:
+            log.debug( 'recieving body..')
+            resp_body+=block
+        else:
+            log.debug( 'done')
+            break
+    s2.close()
+    gc.collect() #Free memory
+    return resp_body
 
-#url = 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=true'
-url = 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise'
+def process_foto(fname=None):
+    response = face_detect( fname)
+    log.info(response)    
+    #process the return
+    try:
+        faces = ujson.loads(response)
+    except :
+        raise RuntimeError("Problem communicating with Cortana.")
+    
+    for face in faces:
+        print ("I see a {} year old {}".format( 
+            face['faceAttributes']['age'], 
+            face['faceAttributes']['gender']
+        ), end=' ')
+        #print( face['faceId'] )
+        #print( face['faceAttributes'] )
+        #print( face['faceAttributes']['gender'] )
+        #print( face['faceAttributes']['age'] )
 
-fiddler = 'http://192.168.137.1:8888/face/v1.0/detect?returnFaceId=true&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise'
+        print( "with {} hair, {} and {}".format(
+            face['faceAttributes']['hair']['hairColor'][0]['color'],  #main haircolor
+            ", ".join( face['faceAttributes']['facialHair'] ),
+            face['faceAttributes']['glasses'] 
+        )) 
+        emotion = face['faceAttributes']['emotion']
+        print ( sorted(emotion, key=emotion.__getitem__)[:1] )
+        # In order of sorted values: [1, 2, 3, 4]
 
-fname = '/flash/foto/Jos.jpg'
-s2 = urlopen(url, method='POST',datafile=fname)
-print("Returned")
-#Now read the response string 
-#Readline does not work :-( 
-resp_body=b""
-while True:
-    block = s2.read(512)
-    if block:
-        log.debug( 'recieving body..')
-        resp_body+=block
-    else:
-        log.debug( 'done')
-        break
-s2.close()
-gc.collect() #Free memory
 
-#process the return 
-faces = ujson.loads(resp_body)
-for face in faces:
-    print ("a {} year old {}".format( face['faceAttributes']['age'], face['faceAttributes']['gender']) )
 
-"""
-print( faces[0]['faceId'] )
-print( faces[0]['faceAttributes'] )
-print( faces[0]['faceAttributes']['gender'] )
-print( faces[0]['faceAttributes']['age'] )
 
-print( faces[0]['faceAttributes']['hair']['hairColor'][0]['color']  ) #main haircolor
-print( faces[0]['faceAttributes']['glasses'] )
+for fname in os.listdir('/flash/foto'):
+    print( "Foto : /flash/foto/{}".format(fname) )
+    process_foto( "/flash/foto/{}".format(fname))
 
-print( faces[0]['faceAttributes']['facialHair'] )
-print( faces[0]['faceAttributes']['emotion'] )
-
-emotion = faces[0]['faceAttributes']['emotion']
-print ( sorted(emotion, key=emotion.__getitem__) )
-# In order of sorted values: [1, 2, 3, 4]
-
-"""
-
+#log.setLevel(logging.DEBUG)
+#process_foto( "/flash/foto/Jos2018.jpg")
