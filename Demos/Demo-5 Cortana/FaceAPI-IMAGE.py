@@ -169,11 +169,17 @@ def process_foto(fname=None):
         # In order of sorted values: [1, 2, 3, 4]
 
 
-
-
-for fname in os.listdir('/flash/foto'):
-    print( "Foto : /flash/foto/{}".format(fname) )
-    process_foto( "/flash/foto/{}".format(fname))
+#skip demo for now 
+if False:
+    for fname in os.listdir('/flash/foto'):
+        print( "Foto : /flash/foto/{}".format(fname) )
+        process_foto( "/flash/foto/{}".format(fname))
 
 #log.setLevel(logging.DEBUG)
 #process_foto( "/flash/foto/Jos2018.jpg")
+
+os.sdconfig(os.SDMODE_SPI, clk=18, mosi=23, miso=19, cs=4)
+os.mountsd()
+for fname in os.listdir('/sd/foto2'):
+    print( "Foto : /sd/foto/{}".format(fname) )
+    process_foto( "/sd/foto/{}".format(fname) )
