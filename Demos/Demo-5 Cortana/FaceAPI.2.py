@@ -113,7 +113,7 @@ for face in faces:
     plt.text(origin[0], origin[1], "%s, %d"%(fa["gender"].capitalize(), fa["age"]), fontsize=20, weight="bold", va="bottom")
 _ = plt.axis("off")
 
-"""
+
 # Here are more images that can be analyzed using the same technique.
 # First, define a helper function, ``annotate_image`` to annotate an image given its URL by calling into the Face API.
 
@@ -158,4 +158,5 @@ annotate_image("https://how-old.net/Images/faces2/main002.jpg")
 
 annotate_image("https://how-old.net/Images/faces2/main004.jpg")
 
-""" 
+"""
+

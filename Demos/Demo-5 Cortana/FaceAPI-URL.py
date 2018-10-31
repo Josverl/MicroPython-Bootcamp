@@ -73,3 +73,5 @@ for i in range(9):
         print ("a {} year old {}".format( face['faceAttributes']['age'], face['faceAttributes']['gender']) )
 
 # Finally, the face information can be overlaid of the original image using the `matplotlib` library in Python.
+
+
