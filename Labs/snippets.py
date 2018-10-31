@@ -124,7 +124,7 @@ if not 'ls' in dir():
 ls
 
 #------------------------------
-# Srtring formatting
+# String formatting
 # https://pyformat.info/#simple
 #----------------------------- 
 
@@ -176,4 +176,27 @@ This operation is not available with old-style formatting.
 
 todo: Add Micropython 
 
+#------------------------------
+#ESP32 loging handling
+#ESP32 log messages can be disabled or enabled with the desired log level.
+#------------------------------
+# Logging for the individual components or all components can be set.
+# The following constants can be used for setting the log level:
+# machine.LOG_NONE, machine.LOG_ERROR, machine.LOG_WARN
+# machine.LOG_INFO, machine.LOG_DEBUG, machine.LOG_VERBOSE 
+# machine.loglevel(component, log_level)
+# Set the log level of the component to level log_level
+# component is the name of the component as it apears in log messages.
 
+# NOTE: '*' can be used to set the global log level.
+
+import machine
+machine.loglevel("wifi", machine.LOG_DEBUG)
+machine.loglevel('*', machine.LOG_VERBOSE)
+machine.loglevel('[modnetwork]', machine.LOG_DEBUG)
+machine.loglevel('wifi', machine.LOG_DEBUG)
+machine.loglevel('tcpip_adapter', machine.LOG_DEBUG)
+machine.loglevel('event', machine.LOG_INFO)
+    
+
+#
