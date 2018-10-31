@@ -101,7 +101,7 @@ def urlopen(url, data=None, method="GET", datafile=None):
         
         #Read the first status returned.
         l = l.split(None, 2)
-        print(l)
+        log.debug(l)
         status = int(l[1])
         #read through returned headers 
         while True:
@@ -121,11 +121,11 @@ def urlopen(url, data=None, method="GET", datafile=None):
     s.setblocking(False)
     return s
 
-def face_detect (fname = None):
-    #url = 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise'
-    url = 'http://192.168.137.1:8888/face/v1.0/detect?returnFaceId=true&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise'
+def detect_faces_binary (fname = None):
+    url = 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise'
+    #url = 'http://192.168.137.1:8888/face/v1.0/detect?returnFaceId=true&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise'
     s2 = urlopen(url, method='POST',datafile=fname)
-    print("Returned")
+    log.debug("Returned")
     #Readline does not work :-( 
     resp_body=b""
     while True:
@@ -138,17 +138,15 @@ def face_detect (fname = None):
             break
     s2.close()
     gc.collect() #Free memory
-    return resp_body
-
-def process_foto(fname=None):
-    response = face_detect( fname)
-    log.info(response)    
-    #process the return
     try:
-        faces = ujson.loads(response)
+        log.info(resp_body)            
+        faces = ujson.loads(resp_body)
+        #print(response)
     except :
         raise RuntimeError("Problem communicating with Cortana.")
-    
+    return faces
+
+def process_faces(faces):
     for face in faces:
         print ("I see a {} year old {}".format( 
             face['faceAttributes']['age'], 
@@ -169,17 +167,22 @@ def process_foto(fname=None):
         # In order of sorted values: [1, 2, 3, 4]
 
 
-#skip demo for now 
-if False:
+#Demo from /flash/foto
+if True:
     for fname in os.listdir('/flash/foto'):
+        print('---------------------------------------------------------------')        
         print( "Foto : /flash/foto/{}".format(fname) )
-        process_foto( "/flash/foto/{}".format(fname))
+        faces = detect_faces_binary( "/flash/foto/{}".format(fname))
+        process_faces(faces)
+        print('---------------------------------------------------------------')
 
-#log.setLevel(logging.DEBUG)
-#process_foto( "/flash/foto/Jos2018.jpg")
-
-os.sdconfig(os.SDMODE_SPI, clk=18, mosi=23, miso=19, cs=4)
-os.mountsd()
-for fname in os.listdir('/sd/foto2'):
-    print( "Foto : /sd/foto/{}".format(fname) )
-    process_foto( "/sd/foto/{}".format(fname) )
+#demo from /sd/foto
+if False:
+    os.sdconfig(os.SDMODE_SPI, clk=18, mosi=23, miso=19, cs=4)
+    os.mountsd()
+    for fname in os.listdir('/sd/foto2'):
+        print('---------------------------------------------------------------')
+        print( "Foto : /sd/foto/{}".format(fname) )
+        faces = detect_faces_binary( "/sd/foto/{}".format(fname) )
+        process_faces(faces)
+        print('---------------------------------------------------------------')
