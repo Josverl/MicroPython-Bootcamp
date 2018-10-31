@@ -2,7 +2,7 @@
 # This module provides access to various network related functions and classes.
 # https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo/wiki/network 
 
-import network,time #pylint: disable=import-error
+import network,utime as time#pylint: disable=import-error
 
 # create Access Point interface 
 ap = network.WLAN(network.AP_IF) 
@@ -15,7 +15,7 @@ ap.active(True)
 # so we give the False argument
 tmo = 50
 while not ap.isconnected(False):
-    utime.sleep_ms(100)
+    time.sleep_ms(100)
     tmo -= 1
     if tmo == 0:
         break
@@ -31,7 +31,6 @@ print("Network {}, Channel {}, security: {}, mode:{}".format(
 print("IP:{0}, Network mask:{1}, Router:{2}, DNS: {3}".format( *ap.ifconfig() ) )
 
 #Note: it is not possible the retrieve the password from the AccessPoint 
-
 
 bonus = False
 if bonus:

@@ -11,8 +11,8 @@ sys.path.append('/flash/sys_lib')
 #----------------------------------------------
 #setup some additional logging for instruction 
 #Set True/False depending on need 
-ShowWifi = False
-ShowDebug = False
+ShowWifi = True
+ShowDebug = True
 
 def wifi_cb(info):
     _red = "\033[31m"
