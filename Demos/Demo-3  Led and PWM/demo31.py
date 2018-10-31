@@ -27,7 +27,7 @@ BlueLED.deinit()
 # Fade LED
 import time
 import machine
-BlueLED = machine.PWM(machine.Pin(26), freq=5000)
+BlueLED = machine.PWM(machine.Pin(26), freq=5000, duty = 0)
 while True:
     for i in range(100):
        BlueLED.duty(i)
@@ -40,9 +40,9 @@ while True:
 # Multicolor LED 
 import machine
 
-RedLED = machine.PWM(machine.Pin(22))
-GreenLED = machine.PWM(machine.Pin(21))
-BlueLED = machine.PWM(machine.Pin(26))
+RedLED = machine.PWM(machine.Pin(22), duty = 0)
+GreenLED = machine.PWM(machine.Pin(21), duty = 0)
+BlueLED = machine.PWM(machine.Pin(26), duty = 0)
 
 RedLED.duty(100*1/5)
 GreenLED.duty(100*3/5)
@@ -62,9 +62,9 @@ def fade(led, begin=0, end=100, step=1):
         led.duty(i)
         time.sleep(0.01) 
 
-RedLED = machine.PWM(machine.Pin(22))
-GreenLED = machine.PWM(machine.Pin(21))
-BlueLED = machine.PWM(machine.Pin(26))
+RedLED = machine.PWM(machine.Pin(22), duty = 0)
+GreenLED = machine.PWM(machine.Pin(21), duty = 0)
+BlueLED = machine.PWM(machine.Pin(26), duty = 0)
 
 while True:
    fade(GreenLED)                          # Ramp up green
