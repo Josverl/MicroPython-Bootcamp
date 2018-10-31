@@ -3,8 +3,8 @@
 
 import uos as os 
 
-def whipe_dir( path=".",sub=True):
-        print( "Whipe path {}".format(path) )
+def wipe_dir( path=".",sub=True):
+        print( "wipe path {}".format(path) )
         l = os.listdir(path)
         l.sort()
         #print(l)
@@ -15,7 +15,7 @@ def whipe_dir( path=".",sub=True):
                 st = os.stat(child)
                 if st[0] & 0x4000:  # stat.S_IFDIR
                     if sub:
-                        whipe_dir(child,sub)
+                        wipe_dir(child,sub)
                         try:
                             os.rmdir(child)
                         except:
@@ -26,7 +26,7 @@ def whipe_dir( path=".",sub=True):
                     except:
                         print("Error deleting file {}".format(child))
 
-whipe_dir(path='/flash')
+wipe_dir(path='/flash')
 
 
 
