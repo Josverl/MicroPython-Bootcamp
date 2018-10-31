@@ -5,14 +5,13 @@ import network
 
 # Set default path
 # Needed for importing modules and upip
-sys.path.append('/flash/lib')
-sys.path.append('/flash/sys_lib')
+sys.path[1] = '/flash/lib'
 
 #----------------------------------------------
 #setup some additional logging for instruction 
 #Set True/False depending on need 
 ShowWifi = True
-ShowDebug = True
+ShowDebug = False
 
 def wifi_cb(info):
     _red = "\033[31m"
@@ -24,7 +23,6 @@ def wifi_cb(info):
         msg = ""
     print("\n"+_cyan+"I [WiFi] event: {} ({}){}".format( info[0], info[1], msg)+_norm)
 
-
 if ShowWifi:
     # Enable  (if supported) 
     try:
@@ -35,18 +33,22 @@ if ShowWifi:
 if ShowDebug:
     #enable system wide verbose information messages 
     import machine 
-    machine.loglevel('*', machine.LOG_INFO)
+    machine.loglevel('*', machine.LOG_VERBOSE)
+    machine.loglevel('[modnetwork]', machine.LOG_DEBUG)
+    machine.loglevel('wifi', machine.LOG_DEBUG)
+    machine.loglevel('tcpip_adapter', machine.LOG_DEBUG)
+    machine.loglevel('event', machine.LOG_DEBUG)
+    
 
 #----------------------------------------------
 
-
-# Connect network
+# Auto Connect to the network, starts autoconfig if needed
 import wifisetup
 wifisetup.auto_connect()
 
-
+#Note this section is not normally run, 
+# but is provided as an example of how to force the autoconfiguration  
 if False: 
     #force new network connection 
     import wificonfig
-    def start():
-        wificonfig.webserver_start()
+    wificonfig.webserver_start()
