@@ -18,7 +18,7 @@ header_h = 32
 #draw borders
 def borders():
     tft.resetwin()
-    tft.clear(tft.NAVY)
+    tft.clear(tft.OLIVE)
     #around screen 
     tft.rect(0,0,screen_w, screen_h, tft.RED)
     #border around header
@@ -32,7 +32,7 @@ def header(text=''):
     tft.font(tft.FONT_Comic, transparent = True )
     tft.text(0,0,text,tft.YELLOW) 
 
-def mainwindow(clear=True,color=tft.BLUE):
+def mainwindow(clear=True,color=tft.OLIVE):
     #Activate main Window
     #print(1, header_h+1, screen_w-2, screen_h-2)
     tft.setwin(1, header_h+1, screen_w-2, screen_h-2)

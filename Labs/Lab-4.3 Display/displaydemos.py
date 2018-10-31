@@ -16,6 +16,8 @@ import machine, display, time, math
 
 tft = display.TFT()
 
+
+
 # M5Stack:
 tft.init(tft.M5STACK, width=240, height=320, rst_pin=33, backl_pin=32, miso=19, mosi=23, clk=18, cs=14, dc=27, bgr=True, backl_on=1)
 x= tft.tft_setspeed(40*1000000) #40 Mhz - best for M5 Display 
@@ -272,5 +274,6 @@ def roundrectDemo(sec=5, dofill=False):
             break
     tft.resetwin()
 
-
-    
+def touched():
+    #No touch screen, used to stop demos
+    return False

@@ -8,13 +8,14 @@ tft =  window.tft
 pause('Show Screen Size')
 
 tft.resetwin() 
-tft.clear(tft.NAVY)
+tft.clear(tft.BLACK)
+      
 
 #get the screensize 
 screen_w, screen_h = tft.screensize()
 tft.text(120,int(screen_h/2),"{} by {}".format(*tft.screensize()), color = tft.RED)
 
-time.sleep(2)
+time.sleep(0.5)
 
 #Vertical Ruler
 tft.line(10, 0, 10, screen_h)
@@ -22,20 +23,18 @@ for y in range(0,screen_h,50):
     tft.line(0, y, 20, y,tft.YELLOW)
     tft.text(25 ,y,"{}".format(y), color = tft.WHITE)
 
-time.sleep(2)
+time.sleep(0.5)
 #Horizontal Ruler
 tft.line(0, 10, screen_w,10)
 for x in range(0,screen_w,50):
     tft.line(x, 0, x, 20, tft.YELLOW)
     tft.text(x,25,"{}".format(x), color = tft.WHITE)
 
-pause()
-
 #==================================================================
 pause("create a simple window grid")
 
 window.borders()
-window.header('empty')
+window.header('<insert Tile here>')
 window.mainwindow()
 
 #==================================================================
@@ -44,12 +43,14 @@ window.mainwindow()
 
 pause("Text can be positioned per pixel")
 
-window.header('Manual counting lines')
+window.header('Manual positioning lines')
 window.mainwindow()
+#left top corner
+tft.text(0,0,"Line 1 ...............")
 width, height = tft.fontSize()
 #go one line down, Calculate the position
-for n in range(10):
-    tft.text(0,tft.LASTY + height+2 ,"Line {} ...............".format(n+1), color = tft.ORANGE)
+for n in range(1,10):
+    tft.text(0,tft.LASTY + height+2 ,"Line {} ...............".format(n))
     time.sleep(0.5)
 
 #==================================================================
@@ -108,16 +109,7 @@ tft.image(0, 0, fname )
 
 pause('Display unscaled JPG')
 #appears relative to window, 
-tft.image(0, 0, '/flash/arcelormittal.jpg' )
-# todo: Clarify that the jpg is larger than the actual screen 
-
-pause('Scale down facter 2 , and shift left')
-
-#start position can be outside screen to allow positioning
-#scale downsizes the picture,but causes delay 
-tft.image(-20, 0, '/flash/arcelormittal.jpg',scale=2 )
-
-
+tft.image(0, 0, '/flash/arcelormittal_m5.jpg' )
 
 #==================================================================
 #loading from SD card is slower (Shared SPI)
@@ -162,49 +154,4 @@ if False:
     window.mainwindow(color=tft.WHITE)
     tft.image(0, 0, '/flash/fred.jpg' )
 
-
-
-# Read a section of the screen 
-# tft.readScreen(x, y, width, height [, buff]) 
-# Read the content of the rectangular screen area into buffer.
-# If the buffer object buff is not given, the new string object with the screen data wil be returned.
-# 3 bytes per pixel are returned (R, G, B).
-import gc;gc.collect() # clear some memory 
-
-pause('Save a section of the screen')
-#Show something
-tft.image(0, 0, '/flash/fred.jpg' )
-
-pause('Copy & Clear')
-screen_copy = tft.readScreen(0, 0, 100, 100)
-tft.clear(tft.BLACK)
-
-pause('Restore')
-tft.restoreScreen(0, 0, 100, 100,screencopy)
-del(screencopy)
-
-#todo: verify if the below issues still appear and report to LoBo 
-# Remove text does not position correctly in window
-# tft.textClear(0,0,"Automatic line advance")
-
-# some images are not relative to windows, but to screen 
-# BUG: appears relative to screen 
-#    tft.image(0, 0, '/flash/arcelormittal_s.jpg' )
-#Scroll display - Not implemented 
-
-#M5STack module
-#does not show help or tab completion for inherited display.TFT 
-
-if None: 
-    #fixme: this specific jpg appears relative to screen, not to window 
-    tft.image(0, 0, '/flash/arcelormittal_s.jpg' )
-
-    #LoBO 
-    #BUG : Foreground colour set does not work on font
-    tft.font(tft.FONT_Comic, transparent = True , color=tft.RED)
-    #BUG foreground / background colors cannot be set
-    tft.get_bg() 
-    tft.get_fg() 
-    tft.set_bg(tft.NAVY) 
-    tft.set_fg(tft.RED) 
 
