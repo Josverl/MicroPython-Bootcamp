@@ -16,32 +16,9 @@ import machine, display, time, math
 
 tft = display.TFT()
 
-# ESP32-WROVER-KIT v3:
-#tft.init(tft.ST7789, rst_pin=18, backl_pin=5, miso=25, mosi=23, clk=19, cs=22, dc=21)
-
-# Adafruit:
-#tft.init(tft.ILI9341, width=240, height=320, miso=19, mosi=18, clk=5, cs=15, dc=33, bgr=True, hastouch=tft.TOUCH_STMPE, tcs=32)
-
 # M5Stack:
-tft.init(tft.ILI9341, width=240, height=320, rst_pin=33, backl_pin=32, miso=19, mosi=23, clk=18, cs=14, dc=27, bgr=True, backl_on=1, invrot=3)
-tft.orient(tft.LANDSCAPE)
-
-# Others...
-#tft.init(tft.ILI9341, width=240, height=320, miso=19,mosi=23,clk=18,cs=5,dc=26,tcs=27,hastouch=True, bgr=True)
-#tft.init(tft.ST7735R, speed=10000000, spihost=tft.HSPI, mosi=13, miso=12, clk=14, cs=15, dc=27, rst_pin=26, hastouch=False, bgr=False, width=128, height=160)
-
-def testt():
-    while True:
-        lastx = 0
-        lasty = 0
-        t,x,y = tft.gettouch()
-        if t:
-            dx = abs(x-lastx)
-            dy = abs(y-lasty)
-            if (dx > 2) and (dy > 2):
-                tft.circle(x,y,4,tft.RED)
-        time.sleep_ms(50)
-
+tft.init(tft.M5STACK, width=240, height=320, rst_pin=33, backl_pin=32, miso=19, mosi=23, clk=18, cs=14, dc=27, bgr=True, backl_on=1)
+x= tft.tft_setspeed(40*1000000) #40 Mhz - best for M5 Display 
 
 maxx = 240
 maxy = 320
@@ -59,19 +36,7 @@ fontnames = (
 )
 
 
-# Check if the display is touched
-#-------------
-def touched():
-    if not touch:
-        return False
-    else:
-        tch,_,_ = tft.gettouch()
-        if tch <= 0:
-            return False
-        else:
-            return True
-
-# print display header
+# draw a display header
 #----------------------
 def header(tx, setclip):
     # adjust screen dimensions (depends on used display and orientation)

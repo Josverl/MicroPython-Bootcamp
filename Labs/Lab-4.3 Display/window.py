@@ -1,27 +1,15 @@
-#walkthough 
-
-import time
+############################
+# Very Simple window module
+# Jos Verlinde
+############################
+import utime as time
 
 #init display, direct from Display class to allow help and completion
 if not 'tft' in dir():
     import display
     tft = display.TFT()
     tft.init(tft.M5STACK, width=240, height=320, rst_pin=33, backl_pin=32, miso=19, mosi=23, clk=18, cs=14, dc=27, bgr=True, backl_on=1)
-
-#Clear the display - Default background
-
-tft.clear(tft.NAVY)
-
-# fonts used in this demo
-fontnames = (
-    tft.FONT_Default,
-    tft.FONT_7seg,
-    tft.FONT_Ubuntu,
-    tft.FONT_Comic,
-    tft.FONT_Tooney,
-    tft.FONT_Minya
-)
-
+    x= tft.tft_setspeed(40*1000000) #40 Mhz - best for M5 Display 
 
 #general init 
 screen_w, screen_h = tft.screensize()
