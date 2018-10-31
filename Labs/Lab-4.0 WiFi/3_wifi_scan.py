@@ -13,7 +13,7 @@ def wifiscan():
     #sort on signal strength 
     _networks = sorted(_networks, key=lambda x: x[3], reverse=True)
     #string to define columns and formatting
-    _f = "{0:<32} {2:>8} {3:>8} {5:12} {6:>8}"
+    _f = "{0:<32} {2:>8} {3:>8} {5:15} {6:>8}"
     print( _f.format("SSID",'mac',"Channel","Signal","0","Authmode","Hidden") )
     for row in _networks: 
         print( _f.format( *row ) ) 
