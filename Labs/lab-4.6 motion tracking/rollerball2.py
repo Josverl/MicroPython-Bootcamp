@@ -2,12 +2,13 @@ from micropython import const
 import m5stack          #Helper functions
 
 import machine
-import m5stack
+
 
 
 #init only one time 
 if not 'tft' in dir():
     tft = m5stack.Display()
+
 
 if not 'i2c' in dir():
     i2c = machine.I2C(0, sda=21, scl=22)
@@ -43,22 +44,22 @@ def gyro_start(obj):
 
 	try:
 		from mpu6050 import MPU6050
-		obj['imu'] = MPU6050(i2c, accel_sf=10)
+		obj['motion'] = MPU6050(i2c, accel_sf=10)
 	except:
 		from mpu9250 import MPU9250
-		obj['imu'] = MPU9250(i2c)
+		obj['motion'] = MPU9250(i2c)
 
 	obj['buf'] = [[0, 0] for i in range(0, 6)]
 	tft.rect(65, 65, 60, 60, tft.WHITE, tft.WHITE)  # old pic dot clean
 
 
 def gyro_loop(obj):
-    imu = obj['imu']
+    motion = obj['motion']
     buffer = obj['buf']
     val_x = 0
     val_y = 0
     for i in range(0, 4):
-        raw = imu.acceleration
+        raw = motion.acceleration
         val_x += raw[0]
         val_y += raw[1]
     buffer.pop()

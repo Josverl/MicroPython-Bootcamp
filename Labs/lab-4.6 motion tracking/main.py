@@ -9,7 +9,4 @@ import m5stack
 if not 'tft' in dir():
     tft = m5stack.Display()
 
-if not 'i2c' in dir():
-    i2c = machine.I2C(0, sda=21, scl=22)
-
-
+#import rollerball2
