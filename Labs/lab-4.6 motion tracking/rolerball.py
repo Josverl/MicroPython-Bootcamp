@@ -1,9 +1,9 @@
-import sys 
-sys.path[1]='/flash/lib'
+#rolerball 1 - using Accelerometer
 
-#rolerball
+from micropython import const
 import display
 import m5stack
+import time
 
 #init only one time 
 if not 'tft' in dir():
@@ -13,15 +13,19 @@ import machine,time
 if not 'i2c' in dir():
     i2c = machine.I2C(0, sda=21, scl=22)
 
-MPU9250_ID = const(104) 
-i2c.scan()
-
-if MPU9250_ID in i2c.scan():
+MOTION_ID = const(104) 
+if MOTION_ID in i2c.scan():
     print('motion sensor detected on i2cbus')
-    #load motion sensor logic
-    from mpu9250 import MPU9250
-    motion = MPU9250(i2c)
-    print("Gyro+Accelerometer/Compass MPU9250 id: " + hex(motion.whoami))
+    # load motion sensor logic, 
+    # two different devices share the same ID, try and retry  
+    try:
+        from mpu6050 import MPU6050
+        imu = MPU6050(i2c, accel_sf=10)
+        print("Gyro+Accelerometer/Compass MPU id: " + hex(imu.whoami))
+    except:
+        from mpu9250 import MPU9250
+        imu = MPU9250(i2c) 
+    print("Gyro+Accelerometer/Compass {} id: {}".format(imu.__class__.__name__, hex(imu.whoami)))
 else:
    print('No motion sensor detected')
 
@@ -61,7 +65,7 @@ class Ball:
             self.y=y2
             self.draw()
         
-motion.acceleration
+imu.acceleration
 
 #new balls please
 tft.clear()
@@ -71,7 +75,7 @@ b.draw()
 count = 0
 ACCEL = 10
 while True:
-    x,y,z = motion.acceleration
+    x,y,z = imu.acceleration
     x2 = round(x*ACCEL*-1) #adjust for screen addressing
     y2 = round(y*ACCEL)
     b.move(x2,y2)

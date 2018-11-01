@@ -14,15 +14,14 @@ def pwmled(pin):
     led.duty(100)
     return led
 
+# Hardware setup 
     
-'''
-#connect to Top
-grn_pwm=pwmled(18)
-red_pwm=pwmled(19)
-blu_pwm=pwmled(23)
-'''' 
+# #connect to Top of M5stack Base 
+# grn_pwm=pwmled(18)
+# red_pwm=pwmled(19)
+# blu_pwm=pwmled(23)
 
-#Connect to left 
+#Connect to left of M5Stack base
 grn_pwm=pwmled(2)
 red_pwm=pwmled(5)
 blu_pwm=pwmled(26)
@@ -30,14 +29,29 @@ blu_pwm=pwmled(26)
 
 if not 'i2c' in dir():
     i2c = machine.I2C(0, sda=21, scl=22)
-if 104 in i2c.scan():
+#init only one time 
+if not 'tft' in dir():
+    tft = m5stack.Display()
+
+import machine,time
+if not 'i2c' in dir():
+    i2c = machine.I2C(0, sda=21, scl=22)
+
+MOTION_ID = const(104) 
+if MOTION_ID in i2c.scan():
     print('motion sensor detected on i2cbus')
-
-#load sensor logic
-from mpu9250 import MPU9250
-motion = MPU9250(i2c)
-
-
+    # load motion sensor logic, 
+    # two different devices share the same ID, try and retry  
+    try:
+        from mpu6050 import MPU6050
+        imu = MPU6050(i2c, accel_sf=10)
+        print("Gyro+Accelerometer/Compass MPU id: " + hex(imu.whoami))
+    except:
+        from mpu9250 import MPU9250
+        imu = MPU9250(i2c) 
+    print("Gyro+Accelerometer/Compass {} id: {}".format(imu.__class__.__name__, hex(imu.whoami)))
+else:
+   print('No motion sensor detected')
 
 
 #SENSITIVITY = 1
@@ -52,6 +66,5 @@ while 1:
     red_pwm.duty(z1)
     time.sleep_ms(100)
 
-    
     
 print('Done')
