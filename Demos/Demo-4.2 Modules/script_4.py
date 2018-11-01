@@ -10,3 +10,5 @@ help(nested)
 
 #look inside 
 help(nested.myprinter)
+
+#Also use [TAB].[Completion]
