@@ -1,4 +1,3 @@
-
 # -----------------------
 # flashing led
 # -----------------------
@@ -15,6 +14,17 @@ for x in range(20):
     time.sleep_ms(10)
 
 blue.value(0)
+
+
+# -----------------------
+# set M5Stack speaker to off 
+# to avoid electonic whine when using pin 26 on PWM 
+# https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo/wiki/pin
+# -----------------------
+from machine import Pin
+#set speaker = Pin 25, output to 0 (silence)  
+speaker=Pin(25,Pin.OUT,value=0);
+
 
 #-----------
 # Snippet WiFI
@@ -133,14 +143,18 @@ ls
 #basic Old
 '%s %s' % ('one', 'two')
 
+#print information from a list ( one star )
+mylist = 'Jos', 'Verlinde'
+print('{} {}'.format( *mylist) )
 
-#print infromation from a dict 
+
+#print information from a dict ( two star , use named )
 data = {'first': 'Jos', 'last': 'Verlinde'}
-print('{first} {last}'.format(**data) )
+print('{first} {last}'.format( **data ) )
 #or
 '{first} {last}'.format(first='Hodor', last='Hodor!')
 
-#Padding and aligning strings
+#Padding and alligning strings
 #Align right:
 '{:>10}'.format('test')
 
@@ -198,5 +212,16 @@ machine.loglevel('wifi', machine.LOG_DEBUG)
 machine.loglevel('tcpip_adapter', machine.LOG_DEBUG)
 machine.loglevel('event', machine.LOG_INFO)
     
-
-#
+#------------------------------
+# mount SDCard 
+# SDCard configuration for M5Stack
+# https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo/wiki/filesystems 
+#------------------------------
+import uos as os
+try:
+    #crude way to detect if the sd is already loaded 
+    _ = os.stat('/sd')
+except:
+    #if 
+    _ = os.sdconfig(os.SDMODE_SPI, clk=18, mosi=23, miso=19, cs=4)
+    _ = os.mountsd()
