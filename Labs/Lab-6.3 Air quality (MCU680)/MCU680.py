@@ -1,4 +1,4 @@
-import machine, time, ustruct
+import machine, time
 import logging
 import ustruct
 
@@ -7,7 +7,7 @@ log=logging.getLogger(name='sensor')
 
 #log.setLevel(logging.DEBUG)
 
-# Initialize serial connection toMCU680 
+# Initialize serial connection to MCU680 
 if not 'uart' in dir():
     uart = machine.UART(1, tx=26, rx=36, baudrate=9600)
 
@@ -23,9 +23,22 @@ def init_sensor():
     _ = uart.write(b'\xa5\x55\x3f\x39') 
     # Initialize GY_MCU680 in continuous output mode, send the data every x
     _ = uart.write(b'\xa5\x56\x02\xfd')
+    #simple way to ensure that we start reading at the beginning of a frame
+    uart.flush()
 
-def process_data(measurements):
-    # todo: check Altitude calculation ?
+
+def data_ready():
+    try:
+        return uart.any() >= 20
+    except:
+        return False
+
+def read_data():
+    global measurements
+    if uart.any() >= 20:
+        _ = uart.readinto(measurements)        
+
+def process_data():
     """ returns a dictionary in the format 
         {'Gas': 131348, 'Temp': 24.15, 'Pres': 102265, 'IAQ': 92, 'Humi': 37.58, 'IAQa': 0, 'Alt': 65459}
         Temp    Temperature, Unit: °C, Data Range: -40~85
@@ -37,14 +50,17 @@ def process_data(measurements):
         IAQa    Indoor Air Quality Accuracy,Data Range of IAQ is 0~3, The larger the value, the better accuracy
 
     """ 
+    global measurements
+    global uart
+
     results = {}
 
     log.debug("PreAmble         {:x}{:x}".format(measurements[0],measurements[1]))
     log.debug("DataFrame type   {:08b}".format(measurements[2]))
     log.debug("DataFrame length {}".format(measurements[3]))
-    #todo: Altitude is not reported/calculated correctly
     # temp2=(Re_buf[4]<<8|Re_buf[5]);   
     Temp = measurements[4] << 8 | measurements[5]
+    #ustruct.unpack_from(">h", measurements,4)[0]/100
     results.update({'Temp' : Temp/100})       
     # temp1=(Re_buf[6]<<8|Re_buf[7]);
     Humi = measurements[6] << 8 | measurements[7]
@@ -63,64 +79,13 @@ def process_data(measurements):
     results.update({'Gas' : Gas})
     # Altitude=(Re_buf[17]<<8)|Re_buf[18]; 
     #Alt = measurements[17] << 8 | measurements[18]
-
     Alt = ustruct.unpack_from(">h", measurements,17)[0]
     results.update({'Alt' : Alt})    
     return results
 
-init_sensor()
 
 
-# #simple way to ensure that we start reading at the beginning of a frame
-# uart.flush()
-# while True:
-#     #Wait for at least 20 bytes waiting
-#     if uart.any() >= 20:
-#         #now get exactly 20 bytes (length of the buffer) 
-#         _ = uart.readinto(measurements)
-#         #transfor the data into a dict 
-#         readings = process_data(measurements)
-#         #print(readings)
-#         #output the results to the serial 
-#         print("Temperature: {Temp:4.1f} C, Humidity: {Humi:2.0f}%, Altitude: {Alt} meters, Pressure: {Pres:7.2f} HPa".format( **readings))
-#         #todo: output the results to the the screen
 
-#     time.sleep(0.1)
-
-#Example using a timer 
-import machine
-
-#Timer call back function 
-#This will be called repeatedly by a timer
-def sensor_cb(timer):
-    #external inputs / outputs 
-    global measurements
-    global uart
-    global readings
-    while uart.any() >= 20:
-        _ = uart.readinto(measurements)
-        readings = process_data(measurements)
-        #output the results to the serial 
-        print("Temperature: {Temp:4.1f} C, Humidity: {Humi:2.0f}%, Altitude: {Alt} meters, Pressure: {Pres:7.2f} HPa".format( **readings))
-    else:
-        pass
-
-#simple way to ensure that we start reading at the beginning of a frame
-uart.flush()
-
-#create a timer
-t3 = machine.Timer(3)
-# call the sensor_cb function every 2 seconds
-t3.init(period=3*1000, mode=t3.PERIODIC, callback=sensor_cb)
-
-# t3.pause()
-
-# t3.resume()
-
-done= False
-if done:
-    t3.stop()
-    t3.deinit()
 
 
     #   print("Type1: ", type(measurements[2][2]))   -> 'str'
