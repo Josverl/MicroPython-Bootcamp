@@ -1,7 +1,14 @@
 import machine, time, ustruct
 
+import logging
+logging.basicConfig()
+log=logging.getLogger(name='sensor')
+
+#log.setLevel(logging.DEBUG)
+
 # Initialize serial connection toMCU680 
-uart = machine.UART(1, tx=26, rx=36, baudrate=9600)
+if not 'uart' in dir():
+    uart = machine.UART(1, tx=26, rx=36, baudrate=9600)
 
 # Variables
 measurements = bytearray(20)
@@ -10,60 +17,112 @@ def testBit(int_type, offset):
     mask = 1 << offset
     return(int_type & mask)
 
-
 def init_sensor():
-    # Initialize GY_MCU680 to output all data
+    # Initialize GY_MCU680 to output all supported data types (0x3F --> '00111111')
     _ = uart.write(b'\xa5\x55\x3f\x39') 
-    # Initialize GY_MCU680 in continuous output mode
+    # Initialize GY_MCU680 in continuous output mode, send the data every x
     _ = uart.write(b'\xa5\x56\x02\xfd')
 
 def process_data(measurements):
-        results = {}
-#       temp2=(Re_buf[4]<<8|Re_buf[5]);   
-        Temp = measurements[4] << 8 | measurements[5]
-        results.update({'Temp' : Temp})       
-#       temp1=(Re_buf[6]<<8|Re_buf[7]);
-        Humi = measurements[6] << 8 | measurements[7]
-        results.update({'Humi' : Humi})
-#       Pressure=((uint32_t)Re_buf[8]<<16)|((uint16_t)Re_buf[9]<<8)|Re_buf[10];
-        Pres = measurements[8] << 16 | measurements[9] << 8 | measurements[10]
-        results.update({'Pres' : Pres})        
-#       IAQ_accuracy= (Re_buf[11]&0xf0)>>4;
-        IAQa = measurements[11] & int('f0',16) >> 4
-        results.update({'IAQa' : IAQa})        
-#       IAQ=((Re_buf[11]&0x0F)<<8)|Re_buf[12];
-        IAQ = measurements[11] & int('f0',16) << 8 | measurements[12]
-        results.update({'IAQ' : IAQ})        
-#       Gas=((uint32_t)Re_buf[13]<<24)|((uint32_t)Re_buf[14]<<16)|((uint16_t)Re_buf[15]<<8)|Re_buf[16];
-        Gas = measurements[13] << 24 | measurements[14] << 16 | measurements[15] << 8 | measurements[16]
-        results.update({'Gas' : Gas})
-#       Altitude=(Re_buf[17]<<8)|Re_buf[18]; 
-        Alt = measurements[17] << 8 | measurements[18]
-        results.update({'Alt' : Alt})    
-        return results
+    # todo: check Altitude calculation ?
+    """ returns a dictionary in the format 
+        {'Gas': 131348, 'Temp': 24.15, 'Pres': 102265, 'IAQ': 92, 'Humi': 37.58, 'IAQa': 0, 'Alt': 65459}
+        Temp    Temperature, Unit: °C, Data Range: -40~85
+        Pres    Pressure, Unit: HPa (Hecto Pascal), Data range: 3.00~1100.00
+        Humi    Relative Humidity, Unit: %Rh, Data Range:  0~100 
+        Alt     Altitude, Unit: m (Meter), Data Range: -32768 - 32767 
+        Gas     Gas resistance, Unit: Ohm, Data Range: 0-4294967296, unit ohm
+        IAQ     Indoor Air Quality. Data Range of IAQ is 0~500. The larger the value, the worse  the air quality. 
+        IAQa    Indoor Air Quality Accuracy,Data Range of IAQ is 0~3, The larger the value, the better accuracy
+
+    """ 
+    results = {}
+
+    log.debug("PreAmble         {:x}{:x}".format(measurements[0],measurements[1]))
+    log.debug("DataFrame type   {:08b}".format(measurements[2]))
+    log.debug("DataFrame length {}".format(measurements[3]))
+    #todo: Altitude is not reported/calculated correctly
+    # temp2=(Re_buf[4]<<8|Re_buf[5]);   
+    Temp = measurements[4] << 8 | measurements[5]
+    results.update({'Temp' : Temp/100})       
+    # temp1=(Re_buf[6]<<8|Re_buf[7]);
+    Humi = measurements[6] << 8 | measurements[7]
+    results.update({'Humi' : Humi/100})
+    # Pressure=((uint32_t)Re_buf[8]<<16)|((uint16_t)Re_buf[9]<<8)|Re_buf[10];
+    Pres = measurements[8] << 16 | measurements[9] << 8 | measurements[10]
+    results.update({'Pres' : Pres/100})        
+    # IAQ_accuracy= (Re_buf[11]&0xf0)>>4;
+    IAQa = measurements[11] & int('f0',16) >> 4
+    results.update({'IAQa' : IAQa})        
+    # IAQ=((Re_buf[11]&0x0F)<<8)|Re_buf[12];
+    IAQ = measurements[11] & int('f0',16) << 8 | measurements[12]
+    results.update({'IAQ' : IAQ})        
+    # Gas=((uint32_t)Re_buf[13]<<24)|((uint32_t)Re_buf[14]<<16)|((uint16_t)Re_buf[15]<<8)|Re_buf[16];
+    Gas = measurements[13] << 24 | measurements[14] << 16 | measurements[15] << 8 | measurements[16]
+    results.update({'Gas' : Gas})
+    # Altitude=(Re_buf[17]<<8)|Re_buf[18]; 
+    Alt = measurements[17] << 8 | measurements[18]
+    results.update({'Alt' : Alt})    
+    return results
 
 init_sensor()
 
 
-#uart.flush()
-while True:
-    #Wait for at least 20 bytes waiting
-    buffer_size = uart.any()
-    if buffer_size >= 20:
-        #now get exactly 20 bytes (length of the buffer) 
-        uart.readinto(measurements)
-        #transfor the data into a dict 
+# #simple way to ensure that we start reading at the beginning of a frame
+# uart.flush()
+# while True:
+#     #Wait for at least 20 bytes waiting
+#     if uart.any() >= 20:
+#         #now get exactly 20 bytes (length of the buffer) 
+#         _ = uart.readinto(measurements)
+#         #transfor the data into a dict 
+#         readings = process_data(measurements)
+#         #print(readings)
+#         #output the results to the serial 
+#         print("Temperature: {Temp:4.1f} C, Humidity: {Humi:2.0f}%, Altitude: {Alt} meters, Pressure: {Pres:7.2f} HPa".format( **readings))
+#         #todo: output the results to the the screen
+
+#     time.sleep(0.1)
+
+#Example using a timer 
+import machine
+
+#Timer call back function 
+#This will be called repeatedly by a timer
+def sensor_cb(timer):
+    #external inputs / outputs 
+    global measurements
+    global uart
+    global readings
+    while uart.any() >= 20:
+        _ = uart.readinto(measurements)
         readings = process_data(measurements)
-        #print the dict 
-        print(readings)
-        #ToDo : Add Fancy Print 
-        print("Temperature : {Temp}, Pressure {Pres}".format( **readings))
+        #output the results to the serial 
+        print("Temperature: {Temp:4.1f} C, Humidity: {Humi:2.0f}%, Pressure: {Pres:7.2f} HPa".format( **readings))
+    else:
+        pass
 
-    time.sleep(0.1)
+#simple way to ensure that we start reading at the beginning of a frame
+uart.flush()
 
-#        print("Type1: ", type(measurements[2][2]))   -> 'str'
-#        print("Type2: ", type(ustruct.unpack('b',measurements[2][2])))     -> 'tuple'
-#        print("Type3: ", type(ustruct.unpack('b',measurements[2][2])[0] ))  -> 'int'
+#create a timer
+t3 = machine.Timer(3)
+# call the sensor_cb function every 2 seconds
+t3.init(period=3*1000, mode=t3.PERIODIC, callback=sensor_cb)
+
+# t3.pause()
+
+# t3.resume()
+
+done= False
+if done:
+    t3.stop()
+    t3.deinit()
+
+
+    #   print("Type1: ", type(measurements[2][2]))   -> 'str'
+    #   print("Type2: ", type(ustruct.unpack('b',measurements[2][2])))     -> 'tuple'
+    #   print("Type3: ", type(ustruct.unpack('b',measurements[2][2])[0] ))  -> 'int'
 
 # Meaning of the Byte0:
 # Bit7 Bit6 Bit5     Bit4 Bit3 Bit2         Bit1     Bit0
@@ -89,18 +148,18 @@ while True:
 #  (The data type is signed 16 bits: -32768----- 32767)
 
 # I tried to test byte 0 but the value is always the same :-(
-#        if testBit(ustruct.unpack('B',measurements[2][0])[0], 0) != 0:
-#            print("Has Temperature (range -40 - 85 °C)")
-#        if testBit(ustruct.unpack('B',measurements[2][0])[0], 1) != 0:
-#            print("Has Relative humidity (range 0 - 100%")
-#        if testBit(ustruct.unpack('B',measurements[2][0])[0], 2) != 0:
-#            print("Has Air pressure")
-#        if testBit(ustruct.unpack('B',measurements[2][0])[0], 3) != 0:
-#            print("Has Indoor Air Quality (IAQ range is 0~500. The larger the value, the worse the air quality qualidade)")
-#        if testBit(ustruct.unpack('B',measurements[2][0])[0], 4) != 0:
-#            print("  Tem resistancia de Gas")
-#        if testBit(ustruct.unpack('B',measurements[2][0])[0], 5) != 0:
-#            print("  Tem Altitute")
+    #   if testBit(ustruct.unpack('B',measurements[2][0])[0], 0) != 0:
+    #       print("Has Temperature (range -40 - 85 °C)")
+    #   if testBit(ustruct.unpack('B',measurements[2][0])[0], 1) != 0:
+    #       print("Has Relative humidity (range 0 - 100%")
+    #   if testBit(ustruct.unpack('B',measurements[2][0])[0], 2) != 0:
+    #       print("Has Air pressure")
+    #   if testBit(ustruct.unpack('B',measurements[2][0])[0], 3) != 0:
+    #       print("Has Indoor Air Quality (IAQ range is 0~500. The larger the value, the worse the air quality qualidade)")
+    #   if testBit(ustruct.unpack('B',measurements[2][0])[0], 4) != 0:
+    #       print("  Tem resistancia de Gas")
+    #   if testBit(ustruct.unpack('B',measurements[2][0])[0], 5) != 0:
+    #       print("  Tem Altitute")
 
 
 # Arduino code

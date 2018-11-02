@@ -17,8 +17,11 @@ def get_networktime():
 
 # Auto Connect to the network, starts autoconfig if needed
 import wifisetup
-# wifisetup.auto_connect()
-# get_networktime()
+wifisetup.auto_connect()
+get_networktime()
+
+#start telnet server
+wifisetup.network.telnet.start(user="micro", password="python")
 
 # uncomment for file access functions
 # from upysh import *
