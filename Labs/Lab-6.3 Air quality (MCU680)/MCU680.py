@@ -1,6 +1,7 @@
 import machine, time, ustruct
-
 import logging
+import ustruct
+
 logging.basicConfig()
 log=logging.getLogger(name='sensor')
 
@@ -61,7 +62,9 @@ def process_data(measurements):
     Gas = measurements[13] << 24 | measurements[14] << 16 | measurements[15] << 8 | measurements[16]
     results.update({'Gas' : Gas})
     # Altitude=(Re_buf[17]<<8)|Re_buf[18]; 
-    Alt = measurements[17] << 8 | measurements[18]
+    #Alt = measurements[17] << 8 | measurements[18]
+
+    Alt = ustruct.unpack_from(">h", measurements,17)[0]
     results.update({'Alt' : Alt})    
     return results
 
@@ -98,7 +101,7 @@ def sensor_cb(timer):
         _ = uart.readinto(measurements)
         readings = process_data(measurements)
         #output the results to the serial 
-        print("Temperature: {Temp:4.1f} C, Humidity: {Humi:2.0f}%, Pressure: {Pres:7.2f} HPa".format( **readings))
+        print("Temperature: {Temp:4.1f} C, Humidity: {Humi:2.0f}%, Altitude: {Alt} meters, Pressure: {Pres:7.2f} HPa".format( **readings))
     else:
         pass
 
