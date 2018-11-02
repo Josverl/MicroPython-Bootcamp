@@ -188,11 +188,46 @@ print('{first} {last}'.format( **data ) )
 New style formatting also allows objects to control their own rendering. This for example allows datetime objects to be formatted inline:
 This operation is not available with old-style formatting.
 
-todo: Add Micropython 
+#------------------------------
+# mount SDCard 
+# SDCard configuration for M5Stack
+# https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo/wiki/filesystems 
+#------------------------------
+import uos as os
+try:
+    #crude way to detect if the sd is already loaded 
+    _ = os.stat('/sd')
+except:
+    #if 
+    _ = os.sdconfig(os.SDMODE_SPI, clk=18, mosi=23, miso=19, cs=4)
+    _ = os.mountsd()
+
+
+#------------------------------
+# convert a binary string to usable data
+# For more information on format strings and endiannes, refer to
+# https://docs.python.org/3.5/library/struct.html
+#------------------------------
+
+import struct
+
+# Packing values to bytes
+# The first parameter is the format string. Here it specifies the data is structured
+# with a single four-byte integer followed by two characters.
+# The rest of the parameters are the values for each item in order
+binary_data = struct.pack("icc", 8499000, b'A', b'Z')
+print(binary_data)
+
+# When unpacking, you receive a tuple of all data in the same order
+tuple_of_data = struct.unpack("icc", binary_data)
+print(tuple_of_data)
+
+
 
 #------------------------------
 #ESP32 loging handling
 #ESP32 log messages can be disabled or enabled with the desired log level.
+# todo: python / *nix error codes
 #------------------------------
 # Logging for the individual components or all components can be set.
 # The following constants can be used for setting the log level:
@@ -212,16 +247,3 @@ machine.loglevel('wifi', machine.LOG_DEBUG)
 machine.loglevel('tcpip_adapter', machine.LOG_DEBUG)
 machine.loglevel('event', machine.LOG_INFO)
     
-#------------------------------
-# mount SDCard 
-# SDCard configuration for M5Stack
-# https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo/wiki/filesystems 
-#------------------------------
-import uos as os
-try:
-    #crude way to detect if the sd is already loaded 
-    _ = os.stat('/sd')
-except:
-    #if 
-    _ = os.sdconfig(os.SDMODE_SPI, clk=18, mosi=23, miso=19, cs=4)
-    _ = os.mountsd()

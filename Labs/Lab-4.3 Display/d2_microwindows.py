@@ -34,7 +34,7 @@ for x in range(0,screen_w,50):
 pause("create a simple window grid")
 
 window.borders()
-window.header('<insert Tile here>')
+window.header('<insert Title here>')
 window.mainwindow()
 
 #==================================================================
