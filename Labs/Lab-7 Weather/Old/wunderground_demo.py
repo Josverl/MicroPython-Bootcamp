@@ -6,7 +6,8 @@ Marcus Tarquinio, Jos Verlinde
 
 import machine
 import time
-import bme280
+import bme280 # bme ; or the MCU680 
+import MCU680
 import socket
 import ujson
 

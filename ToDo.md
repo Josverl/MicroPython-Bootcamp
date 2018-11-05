@@ -8,6 +8,20 @@ Lab 4
 * rename folder / lab names (ie not start at 4.0 )
 * AutoWiFi and phone browsers does not yet work 
 * AutoWifi needs to wait a bit longer to connect to w10 hOTSPOT 
+* autowifi has an error
+
+
+Connect to Wifi ssid:M5Stack-9115
+And connect to esp via your web browser (like 192.168.4.1)
+listening on ('0.0.0.0', 80)
+Traceback (most recent call last):
+  File "boot.py", line 20, in <module>
+  File "/flash/lib/wifisetup.py", line 63, in auto_connect
+  File "/flash/lib/wificonfig.py", line 152, in webserver_start
+OSError: Wifi Invalid Argument
+
+
+
 * review boot.py in 4.1 
     - Done :  Clean up where needed, copy all all next labs
 
@@ -72,11 +86,6 @@ CHEATSHEET & Snippets
 ======================
 * Add a slide or line on the cheatsheet 
 * where we point people to the snippets.py 
-
-* Explain how to silence the High pitched beep 
-    - caused by interference between 26 used for PWM and 25 (connected to speaker) 
-    - silence by by pulling pin 25 to Low 
-
 
 
 * FUTURE: Add a micropython snippets addin-to vscode ?

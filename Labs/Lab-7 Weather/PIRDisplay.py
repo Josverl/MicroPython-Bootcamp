@@ -4,7 +4,7 @@ from time import sleep_ms
 import logging
 logging.basicConfig(level=logging.DEBUG)
 #log = logging.getLogger(__name__) #in module
-log = logging.getLogger('menu')
+log = logging.getLogger('pir')
 
 #M5Fire - White lead on Port B
 PIR_PIN = 26 

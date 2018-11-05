@@ -232,10 +232,21 @@ print(binary_data)
 tuple_of_data = struct.unpack("icc", binary_data)
 print(tuple_of_data)
 
+##
+import logging
+logging.basicConfig(level=logging.DEBUG)
+# log = logging.getLogger(__name__)      
+# in modules the __name__ variable can be used 
+log = logging.getLogger('<keyword>')
 
+log.critical("critical debug message")
+log.eror("debug message")
+log.warning("debug message")
+log.info("debug message")
+log.debug("debug value{}".format(x))
 
 #------------------------------
-#ESP32 loging handling
+#ESP32 logging handling
 #ESP32 log messages can be disabled or enabled with the desired log level.
 # todo: python / *nix error codes
 # https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo/wiki/machine#esp32-loging-handling 

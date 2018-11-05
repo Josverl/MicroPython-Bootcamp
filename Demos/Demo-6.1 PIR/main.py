@@ -9,8 +9,7 @@ windows.borders()
 windows.header('Demo 6.1-PIR Sensor ')
 windows.mainwindow()
 
-windows.writeln("")
-windows.writeln("PIR  connected to Port B\nWhite wire = Pin 26 ")
-windows.writeln("")
+windows.writeln("Hardware setup:")
+windows.writeln("Port B:PIR Sensor\nWhite wire = Pin 26 ")
 
-windows.writeln("Run PIRDisplay.py") 
+windows.writeln("See PIRDisplay.py") 

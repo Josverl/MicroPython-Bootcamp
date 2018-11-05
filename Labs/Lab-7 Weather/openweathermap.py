@@ -39,10 +39,12 @@ def getcurrentweather(CityID='2960316', APIKey='126c5aa86fcedeb3bb3876202a8afc7c
     finally:
         response.close() 
     
+    country,city,weather,temp = "unknown","unknown","unknown",-999
     try: 
         country = info['sys']['country']
         city = info['name']
+        temp = float(info['main']['temp'])
         weather = info['weather'][0]['main']
-        return country,city,weather
     except:
-        return "unknown","unknown","unknown"
+        pass
+    return country,city,weather,temp
