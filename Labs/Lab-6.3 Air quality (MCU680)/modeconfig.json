@@ -1,7 +1,0 @@
-{
-    "wifi": {
-        "ssid": "IOTBOOTCAMP",
-        "password": "MicroPython"
-    },
-    "wifi_history": []
-}
