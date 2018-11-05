@@ -1,6 +1,3 @@
-
-windows.header('Lab 6.3 Air Q - Polling')
-
 import time, machine
 from MCU680 import *
 
@@ -15,6 +12,4 @@ while True:
         #output the results to the serial 
         print("Temperature: {Temp:4.1f} C, Humidity: {Humi:2.0f}%, Altitude: {Alt} meters, Pressure: {Pres:7.2f} HPa".format( **readings))
         #todo: output the results to the the screen
-
-        
     time.sleep(1)
