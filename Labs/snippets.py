@@ -15,6 +15,15 @@ for x in range(20):
 
 blue.value(0)
 
+# -----------------------
+# run (another) script in the global scope
+# The Python functions eval and exec invoke the compiler at runtime,
+# which requires significant amounts of RAM
+# NOTE: In most cases it is better to use a well formed module 
+# and import that module, and call any required functions.
+#-----------------------
+exec( open('somescript.py').read() , globals() )
+
 
 # -----------------------
 # set M5Stack speaker to off 
@@ -185,8 +194,9 @@ print('{first} {last}'.format( **data ) )
 
 
 #Datetime
-New style formatting also allows objects to control their own rendering. This for example allows datetime objects to be formatted inline:
-This operation is not available with old-style formatting.
+# New style formatting also allows objects to control their own rendering. This for example allows datetime objects to be formatted inline:
+# This operation is not available with old-style formatting.
+# TODO: Add MicroPython Date and Time Format sample 
 
 #------------------------------
 # mount SDCard 
@@ -228,6 +238,7 @@ print(tuple_of_data)
 #ESP32 loging handling
 #ESP32 log messages can be disabled or enabled with the desired log level.
 # todo: python / *nix error codes
+# https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo/wiki/machine#esp32-loging-handling 
 #------------------------------
 # Logging for the individual components or all components can be set.
 # The following constants can be used for setting the log level:
