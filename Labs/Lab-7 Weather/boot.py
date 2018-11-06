@@ -20,6 +20,9 @@ import wifisetup
 wifisetup.auto_connect()
 get_networktime()
 
+import network
+network.telnet.start(user="micro", password="python")
+
 # uncomment for file access functions
 # from upysh import *
 

@@ -9,8 +9,7 @@ micropython.alloc_emergency_exception_buf(100)
 #----------------------
 # wiring 
 #----------------------
-#M5Fire - White lead on Port B
-PIR_PIN = 26 
+PIR_PIN = 2
 
 #----------------------
 # Initialisation 
@@ -19,7 +18,6 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 #log = logging.getLogger(__name__) #in module
 log = logging.getLogger('station')
-
 
 #-------------------
 windows.mainwindow()
@@ -38,7 +36,7 @@ KEEP_ON = const(1) #seconds
 CityID='2960316'
 APIKey='126c5aa86fcedeb3bb3876202a8afc7c'
 
-  
+ 
 #----------------------
 #Automatic Display activation 
 #----------------------
@@ -64,12 +62,45 @@ def displayoffcb(timer):
         t1.reshoot()
 
 #----------------------
-log.info('Start Automatic Display Activation')
-pir = Pin(PIR_PIN, Pin.IN, handler=pir_cb2, trigger=Pin.IRQ_ANYEDGE) 
-if not ('t1' in dir()):
-    t1 = Timer(1)
-t1.init(period=KEEP_ON*1000, mode=t1.ONE_SHOT, callback=displayoffcb)
-tft.backlight(1)
+# with the M5Fire connections the
+# PIR cannot be connected at the same time as the Sensor :<  
+#----------------------
+if False:
+    log.info('Start Automatic Display Activation')
+    pir = Pin(PIR_PIN, Pin.IN, handler=pir_cb2, trigger=Pin.IRQ_ANYEDGE) 
+    if not ('t1' in dir()):
+        t1 = Timer(1)
+    t1.init(period=KEEP_ON*1000, mode=t1.ONE_SHOT, callback=displayoffcb)
+    tft.backlight(1)
+
+
+#----------------------
+#Timer call back function from the air and temp sensor 
+#This will be called repeatedly by a timer
+#----------------------
+readings={}
+def sensor_cb(timer):
+    #external inputs / outputs 
+    global readings
+    while MCU680.data_ready():
+        MCU680.read_data()
+        readings = MCU680.process_data()
+        log.info("Recieved readings from sensor")
+        #output the results to the serial 
+        print("Temperature: {Temp:4.1f} C, Humidity: {Humi:2.0f}%, Altitude: {Alt} meters, Pressure: {Pres:7.2f} HPa".format( **readings))
+        #print("IAQ Accuracy: {IAQa} , IAQ : {IAQ}, Gas {Gas} Ohm".format( **readings))
+    print('')
+
+MCU680.init_sensor()
+
+#----------------------
+#create a timer to automatically for for the time
+t3 = machine.Timer(3)
+#----------------------
+# call the sensor_cb function every 2 seconds
+SENSOR_INTERVAL = const(10)
+t3.init(period=SENSOR_INTERVAL*1000, mode=t3.PERIODIC, callback=sensor_cb)
+
 
 #----------------------
 # unitinalized values 
@@ -112,15 +143,12 @@ while True:
 
     #-------------------
 
-    # #read local sensor
-    # if sensor.get_sensor_data():
-    #     output = "Temp {} C\nPress :{} hPa\nHumidity  {} RH\nPolution {} RES".format(
-    #         sensor.data.temperature,
-    #         sensor.data.pressure,
-    #         sensor.data.humidity,
-    #         sensor.data.gas_resistance)
-    #     windows.writeln('Data from local sensor:')    
-    #     windows.writeln(output)
+    if readings != {}:
+
+        windows.writeln("Temperature: {Temp:4.1f} C".format( **readings))
+        windows.writeln("Humidity: {Humi:2.0f}%".format( **readings))
+        windows.writeln("Pressure: {Pres:7.2f} HPa".format( **readings))
+
     #------------
     #clean memory , and wait for a while
     gc.collect()

@@ -125,7 +125,7 @@ print("FTP server: {}, {} on {}".format(_[2],_[3],_[4]))
 # Snippet: Telnet Server
 # Lobo Specific 
 #-----------
-import network,time
+import network
 network.telnet.start(user="micro", password="python")
 
 time.sleep(1)

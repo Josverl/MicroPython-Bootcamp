@@ -12,9 +12,8 @@ windows.mainwindow()
 
 windows.writeln("IP : {}".format(wifisetup.wlan_sta.ifconfig()[0] ) )
 windows.writeln("Hardware setup:")
-windows.writeln("Port A:MCU680 Sensor")
-windows.writeln("Port B:PIR Sensor\nWhite wire = Pin 26 ")
+windows.writeln("Port B:MCU680 Sensor\nPin 26 & 36")
 
+#windows.writeln("Port A: FAN Module\nPin 21 = White")
 
-
-
+exec( open('mystation.py').read() , globals() )
