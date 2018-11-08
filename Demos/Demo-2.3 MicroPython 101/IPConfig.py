@@ -8,7 +8,6 @@ if wlan.isconnected():
      wlan.active()
      print('wlan config:', wlan.ifconfig())
      print('Active     :', wlan.active())
-     print('Status     :', wlan.status())
           
 else:
      print('wlan not connected.')
