@@ -1,22 +1,32 @@
 import display
+import logging
+logging.basicConfig(level=logging.DEBUG)
+# log = logging.getLogger(__name__)      
+# in modules the __name__ variable can be used 
+log = logging.getLogger('windows')
+
 #general init so that we can re-use the tft 
-tft = display.TFT()
+if not 'tft' in dir():
+    tft = display.TFT()
+else:
+    #assumes tft is indeed a tft  
+    tft.deinit()  
+
 screen_w = const(320)
 screen_h = const(240)
 header_h = const(32)
 
-if not 'debug' in dir():
-    debug = False
-    
 def tftinit(splash=True):
-    global tft, screen_w, screen_h, debug
+    global tft, screen_w, screen_h
     if not 'tft' in dir():
+        log.debug('new display.TFT()')
         tft = display.TFT()
     else:
         #assumes tft is indeed a tft  
         tft.deinit()    
 
-    if debug: print('Initialize tft')
+    log.debug('Initialize tft')
+    
     tft.init(tft.M5STACK, width=screen_w, height=screen_h, rst_pin=33, backl_pin=32, miso=19, mosi=23, clk=18, cs=14, dc=27, bgr=True, backl_on=1,speed=40000000,splash=splash)
     tft.font(tft.FONT_DejaVu18, transparent = False )
     tft.text(0,0,'')
@@ -34,14 +44,13 @@ def borders(clear=True,bg=tft.BLACK,bd=tft.RED,hd=tft.MAROON):
     
 def header(text='',fg=tft.YELLOW,bg=tft.MAROON):
     "draw display header and set header text"
-    global debug
     #save window (and pos ?) 
     pos = (100,100)
     try:
         #gets the abs position , not relative to window !
         pos = tft.text_x(), tft.text_y()
         tft.savewin()
-        if debug: print('savewin')
+        log.debug('savewin')
     except:
         pass
     #header window
@@ -52,7 +61,7 @@ def header(text='',fg=tft.YELLOW,bg=tft.MAROON):
     #restore window
     try:
         tft.restorewin()
-        if debug: print('restorewin')
+        log.debug('restorewin')
     except:
         pass
     #restore text_cursor pos, recalc relative to main window

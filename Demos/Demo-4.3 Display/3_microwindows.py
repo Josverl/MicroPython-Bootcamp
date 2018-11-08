@@ -4,6 +4,7 @@ if 'demo' in dir():
     machine.reset()
 
 #Assumes a SD card is inserted 
+from upysh import *
 import uos as os
 _ = os.sdconfig(os.SDMODE_SPI, clk=18, mosi=23, miso=19, cs=4)
 _ = os.mountsd()
@@ -138,3 +139,4 @@ if False:
     tft.image(0, 0, '/flash/fred.jpg' )
 
 
+print('\r\n>>>\r\n')
