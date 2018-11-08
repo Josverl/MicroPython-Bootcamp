@@ -3,8 +3,8 @@ my module
 """
 
 def dowork(x,y):
-	return x+y
+	return x*y/(x+y)
 
-def greet(n):
-	m = 'hello'+str(n)
+def greeting(n):
+	m = 'hello '+str(n)
 	return m

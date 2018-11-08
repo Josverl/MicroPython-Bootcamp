@@ -1,14 +1,14 @@
-import nested
+# import a module that imports another module 
+# nested 
 
+import nested
 nested.greetit('Harry')
 
-#inspect what is loaded 
-dir()
-
-#and a more detailed look
+# and a more detailed look
 help(nested)
 
-#look inside 
+#look inside the 2nd module 
 help(nested.myprinter)
 
+nested.myprinter.printit("Hello Everybody" )
 #Also use [TAB].[Completion]

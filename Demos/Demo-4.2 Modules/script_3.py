@@ -1,8 +1,9 @@
+# import just one function from a module 
+# to save memory 
+from module import dowork
+
+#now we can us a different name to get to the imported function
 #
-import module as mod
+dowork(13,45)
 
-#now we can us a different name to get to the immported functions
-mod.dowork(2,3)
-
-# the original module and filename are still present
-help(mod)
+dir()
