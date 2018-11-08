@@ -22,7 +22,8 @@ The bootcamp will use [MicroPython](http://micropython.org/) and specifically th
 
 IDE Tooling
 -----------
-The Labs will make use of[ Visual Studio Code](https://code.visualstudio.com/Download) in combination with the [pymakr](https://docs.pycom.io/pymakr/installation/vscode) add-in by Pycom, which graciously also supports non-pycom boards running Micropython .
+The Labs will make use of [Visual Studio Code](https://code.visualstudio.com/Download) in combination with the [pymakr](https://docs.pycom.io/pymakr/installation/vscode) VCSCode add-in by Pycom, 
+which graciously also supports non-pycom boards running Micropython as of version 0.1.4
 
 Earlier versions of this material made use of a fork of ESPlorer: [Josverl/ESPlorer](https://github.com/Josverl/ESPlorer) which is a simple IDE and this fork has specific support for MicroPython.
 
@@ -36,12 +37,20 @@ Code, Documentation and required binaries are located in the following structure
     │   ├───Firmware                The ESP32 Firmware to be used
     │   ├───Lab-1 Description       Lab code and Decumentation
     │   ├───Lab-2 Description
-    │   ├───Lab-x
-    │   └───Libs                    MicroPython Libraries
+    │   └───Lab-x Template
+    │       └───Lib                 MicroPython Libraries
     └───PC                          Software to be loaded on the MCU
         ├───IDE
         ├───Prerequisites
         └───Python
+
+## Development
+Windows 10:
+
+* Fork or clone this repo to your machine , ie C:\MicroPyhon-Bootcamp
+* Optionally you can clone the repo to another location (D:\Dev\Micropython-Bootcamp) and crerate a symlink to access it from c:\Micropython-Bootcamp using 
+  'mklink /d :\Micropython-Bootcamp D:\Dev\Micropython-Bootcamp`. Note that this requires Admin privilges or Developer Mode on Windows 10 
+
 
 ## Contributions
 Please refer to [Contributing.md](Documentation/CONTRIBUTING.md)
