@@ -1,3 +1,5 @@
+# Note that the pymakr > run file command sends a few (4) additional keystrokes 
+# as a result of this 
 
 def pause(Status = None, msg='Press Enter to continue'):
     from sys import stdin

@@ -1,26 +1,12 @@
 """
 Demo program demonstrating the capabities of the MicroPython display module
 Author:    LoBo (https://github/loboris)
-Date:   08/10/2017
-
 """
-
-#todo: make some changes to provide a better demo 
-# 1) make into a proper module 
-# 2) only init tft when there is no tft instance already initialised 
-# 3) set a better SPI Speed - 40 Mhz 
-# 4) update with additional demo's with newer functionality ?
-
-
 import machine, display, time, math
 
-tft = display.TFT()
-
-
-
-# M5Stack:
-tft.init(tft.M5STACK, width=240, height=320, rst_pin=33, backl_pin=32, miso=19, mosi=23, clk=18, cs=14, dc=27, bgr=True, backl_on=1)
-x= tft.tft_setspeed(40*1000000) #40 Mhz - best for M5 Display 
+if not 'tft' in dir():
+    tft = display.TFT()
+    tft.init(tft.M5STACK,  rst_pin=33, backl_pin=32, miso=19, mosi=23, clk=18, cs=14, dc=27, bgr=True, backl_on=1,speed=40000000)
 
 maxx = 240
 maxy = 320

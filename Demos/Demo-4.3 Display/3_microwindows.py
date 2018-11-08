@@ -1,9 +1,20 @@
-import window
+if 'demo' in dir():
+    import machine
+    print( "Please reset MCU to avoid init the display in 2 different contexts") 
+    machine.reset()
+
+#Assumes a SD card is inserted 
+import uos as os
+_ = os.sdconfig(os.SDMODE_SPI, clk=18, mosi=23, miso=19, cs=4)
+_ = os.mountsd()
+cp("/flash/fred.jpg", "/sd/fred.jpg")
+
+
 import time
 from pause import *
 from upysh import *
-
-tft =  window.tft
+import windows
+tft =  windows.tft
 
 pause('Show Screen Size')
 
@@ -33,9 +44,9 @@ for x in range(0,screen_w,50):
 #==================================================================
 pause("create a simple window grid")
 
-window.borders()
-window.header('<insert Tile here>')
-window.mainwindow()
+windows.borders()
+windows.header('<insert Tile here>')
+windows.mainwindow()
 
 #==================================================================
 #line by line 
@@ -43,8 +54,8 @@ window.mainwindow()
 
 pause("Text can be positioned per pixel")
 
-window.header('Manual positioning lines')
-window.mainwindow()
+windows.header('Manual positioning lines')
+windows.mainwindow()
 #left top corner
 tft.text(0,0,"Line 1 ...............")
 width, height = tft.fontSize()
@@ -58,8 +69,8 @@ for n in range(1,10):
 # Todo:   line 1 leaves whitespace on top 
 pause("There is also a Text 'Cursor' to allow NEWLINE and Appending text")
 
-window.header('Automatic line advance')
-window.mainwindow()
+windows.header('Automatic line advance')
+windows.mainwindow()
 tft.text(0,0,"Automatic line advance\n\r") 
 time.sleep(0.5)
 
@@ -78,30 +89,10 @@ for n in range(10):
 
 
 #==================================================================
-#Make bold by shifting slightly 
-#requires font set to transparency 
-pause('simulate bold text')
-
-window.header()
-txt = "Bolded text\n\r"
-tft.text(1,1,txt,tft.YELLOW)
-tft.text(2,2,txt,tft.YELLOW)
-
-#==================================================================
-#Add Shadow by writing a shifted shadow first  
-#requires font set to transparency 
-pause('Add Shadow')
-
-window.header()
-txt = "Text with added shadow\r\n"
-tft.text(3,3,txt,tft.BLACK)
-tft.text(1,1,txt,tft.YELLOW)
-
-#==================================================================
 pause('Display image loaded to flash')
 
-window.header('Display image from flash')
-window.mainwindow(color=tft.WHITE)
+windows.header('Display image from flash')
+windows.mainwindow(bg=tft.WHITE)
 
 #placed relative to window
 fname= '/flash/fred.jpg'
@@ -116,42 +107,34 @@ tft.image(0, 0, '/flash/arcelormittal_m5.jpg' )
 #mount the SD card
 pause('Notice display from SD Card is much slower due to Shared SPI Bus ( Read / Write)')
 
-import uos as os
-os.sdconfig(os.SDMODE_SPI, clk=18, mosi=23, miso=19, cs=4)
-os.mountsd()
-ls('/sd')
-cp("/flash/fred.jpg", "/sd/fred.jpg")
-
-window.header('Image from SDCard')
-window.mainwindow(color=tft.WHITE)
+windows.header('Image from SDCard(Slow)')
+windows.mainwindow(bg=tft.BLACK)
 tft.image(0, 0, '/sd/fred.jpg' )
 
 #Quick 
 pause('Flash = Quick')
-
-window.mainwindow(color=tft.WHITE)
+windows.header('Image from Flash (Fast)')
+windows.mainwindow(bg=tft.BLACK)
 tft.image(0, 0, '/flash/fred.jpg' )
-
-
 
 if False:
     #different clockspeeds for display 
     tft.tft_setspeed(10*100000) #10 Mhz 
-    window.mainwindow(color=tft.WHITE)
+    windows.mainwindow(bg=tft.WHITE)
     tft.image(0, 0, '/flash/fred.jpg' )
 
     tft.tft_setspeed(20*000000) #20 Mhz
-    window.mainwindow(color=tft.WHITE)
+    windows.mainwindow(bg=tft.WHITE)
     tft.image(0, 0, '/flash/fred.jpg' )
 
     tft.tft_setspeed(40*1000000) #40 Mhz - best for M5 Display 
-    window.mainwindow(color=tft.WHITE)
+    windows.mainwindow(bg=tft.WHITE)
     tft.image(0, 0, '/flash/fred.jpg' )
 
     #Overclocking 
     # Note that this results in a blurred image as the data is sent quicker than the display can recieve/process 
     tft.tft_setspeed(80*1000000) 
-    window.mainwindow(color=tft.WHITE)
+    windows.mainwindow(bg=tft.WHITE)
     tft.image(0, 0, '/flash/fred.jpg' )
 
 
