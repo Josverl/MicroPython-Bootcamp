@@ -17,7 +17,7 @@ def tftinit(splash=True):
         tft.deinit()    
 
     if debug: print('Initialize tft')
-    tft.init(tft.M5STACK, width=screen_w, height=screen_h, rst_pin=33, backl_pin=32, miso=19, mosi=23, clk=18, cs=14, dc=27, bgr=True, backl_on=1,speed=60000000,splash=splash)
+    tft.init(tft.M5STACK, width=screen_w, height=screen_h, rst_pin=33, backl_pin=32, miso=19, mosi=23, clk=18, cs=14, dc=27, bgr=True, backl_on=1,speed=40000000,splash=splash)
     tft.font(tft.FONT_DejaVu18, transparent = False )
     tft.text(0,0,'')
 
