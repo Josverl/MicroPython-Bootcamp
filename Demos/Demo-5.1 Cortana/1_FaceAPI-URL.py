@@ -19,7 +19,8 @@
 # You need the subscription key provided when you activate your free trial,
 #  or you may use a paid subscription key from your Azure dashboard.
 # 
-# ## Running the walkthrough
+
+#  Running the walkthrough
 # To continue with this walkthrough, replace `subscription_key` with a valid subscription key.
 import gc
 import urequests  #pylint: disable=import-error
@@ -80,13 +81,28 @@ def process_faces(faces):
     for face in faces:
         print ("a {} year old {}".format( face['faceAttributes']['age'], face['faceAttributes']['gender']) )
 
-# Here is the URL of the image. 
+
+
 # You can experiment with different images  by changing ``image_url`` to point 
 # to a different image and rerunning this code.
-
 for i in range(9):
     image_url = 'https://how-old.net/Images/faces2/main00{}.jpg'.format(i)
     print("Detecting image {}".format(image_url ))
     faces = detect_faces( image_url )
     process_faces ( faces)
     print('---------------------------------------------------------------')
+
+
+
+# 
+image_url = 'http://photonshouse.com/photo/c6/c60bfd79e990878486374b7d833ccd8e.jpg'
+faces = detect_faces( image_url )
+process_faces ( faces)
+
+image_url = 'https://secure.i.telegraph.co.uk/multimedia/archive/01827/Lakshmi-Mittal_1827147b.jpg'
+faces = detect_faces( image_url )
+process_faces ( faces)
+
+image_url = 'https://pix.avaxnews.com/avaxnews/4a/42/0004424a.jpeg'
+faces = detect_faces( image_url )
+process_faces ( faces)
