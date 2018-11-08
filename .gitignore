@@ -19,3 +19,4 @@ Labs/*/donotuse
 #ignore VSCode and python cache in (all) the Demo and Labs folders 
 */*/.vscode/
 */*/__pycache__/
+MicroPython-IoT-Bootcamp.zip
