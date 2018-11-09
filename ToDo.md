@@ -1,52 +1,38 @@
 #things to do 
 
-VSCode walkthough 
-=================
-
-Lab 4
-========
-* rename folder / lab names (ie not start at 4.0 )
-* AutoWiFi and phone browsers does not yet work 
-* AutoWifi needs to wait a bit longer to connect to w10 hOTSPOT 
+* AutoWiFi and phone browsers does not yet work reliable
 * autowifi has an error
+```
+        Connect to Wifi ssid:M5Stack-9115
+        And connect to esp via your web browser (like 192.168.4.1)
+        listening on ('0.0.0.0', 80)
+        Traceback (most recent call last):
+        File "boot.py", line 20, in <module>
+        File "/flash/lib/wifisetup.py", line 63, in auto_connect
+        File "/flash/lib/wificonfig.py", line 152, in webserver_start
+        OSError: Wifi Invalid Argument
+```
+    - Document lab goals for 4.3 
+        - Init display
+        - write text 
+        - draw line/ circle / triangle / square 
+        - display image (jpg) [Scale image down] 
+
+WeatherStation 
+- Extract Demos from LAB 7 
+    - PIR Loop
+- Seperate
 
 
-Connect to Wifi ssid:M5Stack-9115
-And connect to esp via your web browser (like 192.168.4.1)
-listening on ('0.0.0.0', 80)
-Traceback (most recent call last):
-  File "boot.py", line 20, in <module>
-  File "/flash/lib/wifisetup.py", line 63, in auto_connect
-  File "/flash/lib/wificonfig.py", line 152, in webserver_start
-OSError: Wifi Invalid Argument
+CHEATSHEET & Snippets 
+======================
+* Add a slide or line on the cheatsheet 
+* where we point people to the snippets.py 
 
 
-
-* review boot.py in 4.1 
-    - Done :  Clean up where needed, copy all all next labs
-
-Display code 
-    - DONE : add preconfigured config file to connect 
-
-* Demo 4
-    - copy a number of labs from 4.1 to Demo-4.1
-    - DONE : create demo 4.2 Modules
-    - copy a number of labs from 4.3 to Demo-4.3
-
-    DONE: Display Lab 4.3
-        - Clean walkthrough
-        - DONE Remove files from the testimages folder ( too slow to upload.... )
-        - Document lab goals for 4.3 
-            - Init display
-            - write text 
-            - draw line/ circle / triangle / square 
-            - display image (jpg) [Scale image down] 
-            
 
 Helper Scrips and Snippets
 ==========================
-* DONE: Wipe.py script to remove all files from device 
-
 * Document Error messages 
     import uerrno
     help (uerrno)
@@ -81,11 +67,6 @@ Helper Scrips and Snippets
     import os 
     TODO: Were are the other errors code 
         * Add list of error codes ( I have already created that somewhere ....?)
-
-CHEATSHEET & Snippets 
-======================
-* Add a slide or line on the cheatsheet 
-* where we point people to the snippets.py 
 
 
 * FUTURE: Add a micropython snippets addin-to vscode ?

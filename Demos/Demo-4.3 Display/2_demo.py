@@ -34,3 +34,8 @@ for s in range(3,12,1):
     for angle in range(120,0,-6):
         tft.polygon(160,120, int(angle/2), s, 1, tft.CYAN, tft.BLUE ,angle )
 
+#------------------------------------------------------------------------------
+# Display Mandelbrod set graph https://en.wikipedia.org/wiki/Mandelbrot_set
+import mandel
+mandel.show(tft)
+#Runs About 6 minutes 

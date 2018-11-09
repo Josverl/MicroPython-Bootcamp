@@ -1,7 +1,1 @@
-{
-    "wifi": {
-        "ssid": "",
-        "password": ""
-    },
-    "wifi_history": []
-}
+{"wifi": {"ssid": "IOTBOOTCAMP", "password": "MicroPython"}, "wifi_history": [["IOTBOOTCAMP", "MicroPython"]]}

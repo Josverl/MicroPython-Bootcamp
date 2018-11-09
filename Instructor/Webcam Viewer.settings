@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <settings>
   <localSettings>
-    <josverl-y1>
-      <setting name="topmost">True</setting>
+    <josverl-y3>
+      <setting name="topmost">False</setting>
       <setting name="fullscreen">False</setting>
-      <setting name="cam">Integrated Camera</setting>
+      <setting name="cam">Microsoft® LifeCam Cinema(TM)</setting>
       <setting name="hidecontrols">False</setting>
       <setting name="reso">1280 x 720</setting>
       <setting name="notify">False</setting>
-    </josverl-y1>
+    </josverl-y3>
   </localSettings>
 </settings>

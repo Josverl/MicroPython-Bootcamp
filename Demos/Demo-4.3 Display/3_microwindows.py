@@ -118,6 +118,21 @@ windows.header('Image from Flash (Fast)')
 windows.mainwindow(bg=tft.BLACK)
 tft.image(0, 0, '/flash/fred.jpg' )
 
+
+
+
+
+#------------------------------------------------------------------------------
+# Display Mandelbrod set graph https://en.wikipedia.org/wiki/Mandelbrot_set
+
+pause('Close')
+windows.header('Mandelbrot set')
+
+import mandel
+mandel.show(tft)
+#Runs About 6 minutes 
+
+
 if False:
     #different clockspeeds for display 
     tft.tft_setspeed(10*100000) #10 Mhz 

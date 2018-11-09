@@ -20,8 +20,8 @@ init_sensor()
 
 #create a timer
 t3 = machine.Timer(3)
-# call the sensor_cb function every 2 seconds
-t3.init(period=10*1000, mode=t3.PERIODIC, callback=sensor_cb)
+# call the sensor_cb function every 5 seconds
+t3.init(period=5*1000, mode=t3.PERIODIC, callback=sensor_cb)
 
 done= False
 if done:

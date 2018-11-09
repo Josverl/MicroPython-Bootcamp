@@ -2,6 +2,10 @@ import socket
 import ujson
 import urequests
 
+# get current weather and forecast from :
+# https://openweathermap.org/current
+
+
 def getforecast(CityID='2960316', APIKey='126c5aa86fcedeb3bb3876202a8afc7c'):
     #load information for location 
     url = 'https://api.openweathermap.org/data/2.5/forecast/?id={}&appid={}&units=metric&cnt=3'.format(CityID, APIKey)
