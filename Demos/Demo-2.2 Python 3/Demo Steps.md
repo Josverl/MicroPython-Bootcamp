@@ -49,6 +49,8 @@
     - Show the script section with display init `#Additions for M5Stack Display`
     - run the script usign the PyMakr>Run (Ctrl-Shift-R)
     - show the terminal window (PyCom Console)
+    - Show the difference between display and fastdisplay 
+
 
 
 

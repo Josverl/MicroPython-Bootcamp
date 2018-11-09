@@ -41,6 +41,7 @@ def printGen(cols, rows, array, genNo):
 
 #---------------------------------------------------------------------------
 
+#optimize for speed
 def fastprintGen(cols, rows, array, genNo):
     home()
     write("Game of Life -- Generation " + str(genNo + 1))
@@ -121,8 +122,8 @@ initGrid(COLS, ROWS, thisGen)
 initGrid(COLS, ROWS, nextGen)
 
 for gens in range(GENERATIONS):
-    printGen(COLS, ROWS, thisGen, gens)
-    #fastprintGen(COLS, ROWS, thisGen, gens)
+    #printGen(COLS, ROWS, thisGen, gens)
+    fastprintGen(COLS, ROWS, thisGen, gens)
     processNextGen(COLS, ROWS, thisGen, nextGen)
     time.sleep(DELAY)
     thisGen, nextGen = nextGen, thisGen

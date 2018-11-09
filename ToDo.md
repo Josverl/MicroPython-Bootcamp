@@ -1,5 +1,7 @@
 #things to do 
 
+Uodate lab 4.x Button detection 
+
 * AutoWiFi and phone browsers does not yet work reliable
 * autowifi has an error
 ```
