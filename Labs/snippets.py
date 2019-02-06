@@ -15,6 +15,29 @@ for x in range(20):
 
 blue.value(0)
 
+
+# -----------------------
+# PWM Pulse Width Modulation
+# -----------------------
+
+import machine
+BlueLED = machine.PWM(machine.Pin(26), freq=1, duty=50)
+
+BlueLED.deinit()
+
+# Fade LED
+import time
+import machine
+BlueLED = machine.PWM(machine.Pin(26), freq=5000, duty = 0)
+while True:
+    for i in range(100):
+       BlueLED.duty(i)
+       time.sleep(0.01)
+    for i in range(100, 0, -1):
+       BlueLED.duty(i)
+       time.sleep(0.01)
+
+
 # -----------------------
 # run (another) script in the global scope
 # The Python functions eval and exec invoke the compiler at runtime,
@@ -198,6 +221,32 @@ print('{first} {last}'.format( **data ) )
 # This operation is not available with old-style formatting.
 # TODO: Add MicroPython Date and Time Format sample 
 
+
+#------------------------------
+# Handling errors 
+# Try/catch 
+# todo: add example with different errors 
+#------------------------------
+
+try:
+    #main code
+    ...
+except expression as identifier:
+    #handle error
+    ...
+
+# raise an error
+raise ValueError('A very specific bad thing happened.')
+
+#Best practice in handling errors and logging: 
+logger = logging.getLogger(__name__)
+
+try:
+    do_something_in_app_that_breaks_easily()
+except BaseException as error:
+    logger.error(error)
+    raise                 # just this!
+
 #------------------------------
 # mount SDCard 
 # SDCard configuration for M5Stack
@@ -207,11 +256,13 @@ import uos as os
 try:
     #crude way to detect if the sd is already loaded 
     _ = os.stat('/sd')
-except:
-    #if 
+except OSError as e:
+    #if [Errno 19] ENODEV
+    dir(e)
+    e.errno
+    
     _ = os.sdconfig(os.SDMODE_SPI, clk=18, mosi=23, miso=19, cs=4)
     _ = os.mountsd()
-
 
 #------------------------------
 # convert a binary string to usable data
@@ -240,7 +291,7 @@ logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger('<keyword>')
 
 log.critical("critical debug message")
-log.eror("debug message")
+log.error("debug message")
 log.warning("debug message")
 log.info("debug message")
 log.debug("debug value{}".format(x))
@@ -268,4 +319,26 @@ machine.loglevel('[modnetwork]', machine.LOG_DEBUG)
 machine.loglevel('wifi', machine.LOG_DEBUG)
 machine.loglevel('tcpip_adapter', machine.LOG_DEBUG)
 machine.loglevel('event', machine.LOG_INFO)
-    
+
+
+#------------------------------
+# Class using Python's with statement for managing resources that need to be cleaned up.
+# The problem with using an explicit close() or deinit() statement is that you have to 
+# worry about people forgetting to call it at all or forgetting to place it in a finally block
+# to prevent a resource leak when an exception occurs.
+#------------------------------
+class SkeletonFixture:
+    def __init__(self):
+        pass
+    def __enter__(self):
+        return self
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.deinit()
+    def deinit(self):
+        pass
+    def method(self):
+        pass
+
+# example use 
+with SkeletonFixture() as fixture:
+    fixture.method()
