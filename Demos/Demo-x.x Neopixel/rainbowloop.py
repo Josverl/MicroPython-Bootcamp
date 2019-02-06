@@ -7,14 +7,17 @@ micropython.alloc_emergency_exception_buf(100)
 np=machine.Neopixel(15, 24)
 
 #simple Blocking 
-# while True:
-#     # Set color for pixel 0 (pure red)
-#     for n in range(1,10):
-#         np.set(n,neo.GREEN)
-#         time.sleep(0.1)
-#     for n in range(1,10):
-#         np.set(n,neo.MAGENTA)
-#         time.sleep(0.1)
+while True:
+    # Set color for pixel 0 (pure red)
+    for n in range(1,10):
+        np.set(n,np.RED)
+        time.sleep(0.1)
+    for n in range(1,10):
+        np.set(n,np.GREEN)
+        time.sleep(0.1)
+    for n in range(1,10):
+        np.set(n,np.MAGENTA)
+        time.sleep(0.1)
 
 #global vars 
 pos = 0
